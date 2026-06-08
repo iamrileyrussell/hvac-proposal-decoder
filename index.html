@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HVAC Proposal Decoder | Riley Russell</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Georgia,serif;background:#F8F4EF;min-height:100vh}
+.hdr{background:#1E293B;padding:15px 20px;display:flex;align-items:center;gap:12px}
+.rr{width:42px;height:42px;border-radius:50%;background:#C8873A;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px;flex-shrink:0}
+.wrap{max-width:500px;margin:0 auto;padding:20px 16px 60px}
+.card{background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+input,select{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #E2E8F0;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none;margin-top:5px}
+label{font-size:13px;font-weight:700;color:#374151}
+.zone{border:2px dashed #CBD5E1;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;background:#F8FAFC}
+.btn{width:100%;padding:16px;border-radius:12px;border:none;background:#C8873A;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:4px}
+.btn:disabled{background:#E2E8F0;color:#94A3B8;cursor:not-allowed}
+.hidden{display:none}
+.sec{background:#fff;border:1.5px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px}
+.sec.riley{background:#FFF8F0;border-color:#C8873A}
+.sec-ttl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#64748B;margin-bottom:6px}
+.sec.riley .sec-ttl{color:#C8873A}
+.sec-body{font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap}
+.cta-box{background:#1E293B;border-radius:14px;padding:22px;text-align:center;margin-top:8px}
+.cta-btn{display:inline-block;background:#C8873A;color:#fff;padding:12px 26px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px}
+.err{background:#FEF2F2;border:1.5px solid #FECACA;border-radius:10px;padding:14px;color:#DC2626;font-size:13px;word-break:break-word}
+.ok{background:#2E7D4F;border-radius:11px;padding:13px 16px;margin-bottom:16px;color:#fff}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div class="rr">RR</div>
+  <div>
+    <div style="color:#F8FAFC;font-weight:700;font-size:15px">HVAC Proposal Decoder</div>
+    <div style="color:#C8873A;font-size:11px;text-transform:uppercase;letter-spacing:.05em">by Riley Russell &middot; Raleigh, NC</div>
+  </div>
+</div>
+<div class="wrap">
+
+<div id="vForm">
+  <div class="card" style="display:flex;gap:12px">
+    <div class="rr" style="width:50px;height:50px;font-size:15px;flex-shrink:0">RR</div>
+    <div>
+      <div style="font-weight:700;color:#1E293B;font-size:15px;margin-bottom:3px">Hey, I'm Riley Russell</div>
+      <div style="color:#64748B;font-size:13px;line-height:1.6">I help Raleigh homeowners understand their HVAC proposals. Upload yours and I'll break it down in plain English — free.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;font-size:13px;color:#1E293B;margin-bottom:10px">STEP 1 &mdash; Upload Your Proposal</div>
+    <div class="zone" id="zone">
+      <input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">
+      <div style="font-size:30px;margin-bottom:8px">📄</div>
+      <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div>
+      <div style="color:#64748B;font-size:13px">PDF or photo</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;font-size:13px;color:#1E293B;margin-bottom:12px">STEP 2 &mdash; A Little About You</div>
+    <div style="margin-bottom:10px"><label>Your Name *<input id="iName" type="text" placeholder="Jane Smith"></label></div>
+    <div style="margin-bottom:10px"><label>Email Address *<input id="iEmail" type="email" placeholder="jane@example.com"></label></div>
+    <div style="margin-bottom:10px"><label>Address (optional)<input id="iAddr" type="text" placeholder="123 Main St, Raleigh NC"></label></div>
+    <label>Decision Timeline
+      <select id="iTime">
+        <option value="">Select...</option>
+        <option>ASAP - system is down</option>
+        <option>Within 1-2 weeks</option>
+        <option>Within a month</option>
+        <option>Just researching</option>
+      </select>
+    </label>
+  </div>
+
+  <button class="btn" id="btnGo" disabled onclick="go()">Decode My Proposal</button>
+  <div style="text-align:center;color:#94A3B8;font-size:11px;margin-top:8px">Your info is never sold or shared.</div>
+</div>
+
+<div id="vLoad" class="hidden" style="text-align:center;padding:70px 20px">
+  <div style="font-size:40px;margin-bottom:14px">🔍</div>
+  <div style="font-size:19px;font-weight:700;color:#1E293B;margin-bottom:8px">Analyzing your proposal...</div>
+  <div style="color:#64748B;font-size:14px">Usually takes 20-40 seconds.</div>
+</div>
+
+<div id="vResult" class="hidden">
+  <div class="ok">
+    <div style="font-weight:700;font-size:15px" id="rName">Analysis ready!</div>
+    <div style="font-size:12px;opacity:.85" id="rEmail"></div>
+  </div>
+  <div id="rSections"></div>
+  <div class="cta-box">
+    <div style="font-size:28px;margin-bottom:10px">👋</div>
+    <div style="color:#F8FAFC;font-size:15px;font-weight:700;margin-bottom:5px">Want to talk it through with Riley?</div>
+    <div style="color:#94A3B8;font-size:13px;margin-bottom:14px">Free 15-min call. No pressure.</div>
+    <a class="cta-btn" href="mailto:rileyrussell40@gmail.com?subject=Proposal Review">Schedule a Free Call</a>
+  </div>
+  <button class="btn" style="background:transparent;color:#64748B;border:1.5px solid #CBD5E1;margin-top:12px" onclick="reset()">Analyze Another Proposal</button>
+</div>
+
+<div id="vError" class="hidden" style="text-align:center;padding:40px 20px">
+  <div style="font-size:36px;margin-bottom:12px">⚠️</div>
+  <div style="font-weight:700;font-size:17px;color:#1E293B;margin-bottom:10px">Something went wrong</div>
+  <div class="err" id="errMsg" style="text-align:left;margin-bottom:16px"></div>
+  <button class="btn" style="width:auto;padding:12px 24px" onclick="reset()">Try Again</button>
+</div>
+
+</div>
+<script>
+var file=null;
+var SYS="You are an HVAC proposal analysis assistant for Riley Russell, a professional HVAC Comfort Advisor in Raleigh, NC.\n\nAnalyze the HVAC proposal and respond with these exact sections:\n\n## What You're Being Quoted\nPlain-English summary of equipment and work proposed.\n\n## Equipment Breakdown\nKey equipment details. Rate each: Solid Choice, Worth Asking About, or Red Flag.\n\n## What's Included (and What's Not)\nWhat the proposal covers. Flag missing items like load calculation, static pressure test, ductwork inspection, labor warranty, permit, debris removal.\n\n## Price Assessment\nHonest context on price for the Raleigh NC market.\n\n## Questions to Ask Before Signing\n3-5 specific questions to ask the contractor.\n\n## Riley's Take\nBrief warm summary of what stands out and whether to move forward.\n\nTone: friendly, educational, empowering.";
+
+document.getElementById('zone').onclick=function(){document.getElementById('fInput').click();};
+document.getElementById('fInput').onchange=function(e){if(e.target.files[0]){file=e.target.files[0];var z=document.getElementById('zone');z.innerHTML='<div style="font-size:26px;margin-bottom:6px">✅</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file.name+'</div><div style="color:#64748B;font-size:12px;margin-top:3px">Tap to change</div><input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">';document.getElementById('fInput').onchange=arguments.callee.caller;chk();}};
+
+function chk(){var ok=file&&document.getElementById('iName').value.trim()&&document.getElementById('iEmail').value.trim();document.getElementById('btnGo').disabled=!ok;}
+document.getElementById('iName').oninput=chk;
+document.getElementById('iEmail').oninput=chk;
+
+function show(id){['vForm','vLoad','vResult','vError'].forEach(function(v){document.getElementById(v).className=v===id?'':'hidden';});}
+
+function reset(){file=null;document.getElementById('iName').value='';document.getElementById('iEmail').value='';document.getElementById('iAddr').value='';document.getElementById('iTime').value='';document.getElementById('btnGo').disabled=true;document.getElementById('zone').innerHTML='<input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0"><div style="font-size:30px;margin-bottom:8px">📄</div><div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div><div style="color:#64748B;font-size:13px">PDF or photo</div>';document.getElementById('fInput').onchange=function(e){if(e.target.files[0]){file=e.target.files[0];var z=document.getElementById('zone');z.innerHTML='<div style="font-size:26px;margin-bottom:6px">✅</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file.name+'</div><div style="color:#64748B;font-size:12px;margin-top:3px">Tap to change</div>';chk();}};document.getElementById('zone').onclick=function(){document.getElementById('fInput').click();};show('vForm');}
+
+function go(){
+  var name=document.getElementById('iName').value.trim();
+  var email=document.getElementById('iEmail').value.trim();
+  var addr=document.getElementById('iAddr').value.trim();
+  var time=document.getElementById('iTime').value;
+  show('vLoad');
+  var isImg=file.type.startsWith('image/');
+  var p=isImg?resz(file):b64(file);
+  p.then(function(data){
+    var mime=isImg?'image/jpeg':'application/pdf';
+    var blk=isImg?{type:'image',source:{type:'base64',media_type:mime,data:data}}:{type:'document',source:{type:'base64',media_type:mime,data:data}};
+    var txt='Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'. Timeline: '+(time||'not specified')+'.';
+    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:2000,system:SYS,messages:[{role:'user',content:[blk,{type:'text',text:txt}]}]})});
+  }).then(function(r){return r.text().then(function(raw){
+    var j;try{j=JSON.parse(raw);}catch(e){throw new Error('Bad response: '+raw.slice(0,200));}
+    if(j.error)throw new Error(j.error.message||JSON.stringify(j.error));
+    if(!r.ok)throw new Error('HTTP '+r.status+': '+raw.slice(0,200));
+    var t=(j.content||[]).map(function(b){return b.text||'';}).join('\n').trim();
+    if(!t)throw new Error('Empty response');
+    return t;
+  });}).then(function(t){
+    document.getElementById('rName').textContent='Analysis ready, '+name.split(' ')[0]+'!';
+    document.getElementById('rEmail').textContent='Riley will follow up at '+email;
+    var secs=t.split(/(?=^## )/m).filter(function(s){return s.trim();});
+    var html='';
+    secs.forEach(function(s){
+      var lines=s.trim().split('\n');
+      var h=lines[0].replace(/^##\s*/,'').trim();
+      var b=lines.slice(1).join('\n').trim();
+      var r=h==="Riley's Take";
+      html+='<div class="sec'+(r?' riley':'')+'"><div class="sec-ttl">'+h+'</div><div class="sec-body">'+b.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div></div>';
+    });
+    document.getElementById('rSections').innerHTML=html;
+    show('vResult');
+  }).catch(function(e){document.getElementById('errMsg').textContent=e.message;show('vError');});
+}
+
+function resz(f){return new Promise(function(res,rej){var i=new Image();var u=URL.createObjectURL(f);i.onload=function(){var M=1200,w=i.width,h=i.height;if(w>M){h=Math.round(h*M/w);w=M;}var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(i,0,0,w,h);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.8).split(',')[1]);};i.onerror=function(){rej(new Error('img fail'));};i.src=u;});}
+function b64(f){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(r.result.split(',')[1]);};r.onerror=function(){rej(new Error('read fail'));};r.readAsDataURL(f);});}
+</script>
+</body>
+</html>
