@@ -252,7 +252,7 @@ function runAnalysis() {
     document.getElementById('result-name').textContent = '✅ Analysis ready, ' + name2.split(' ')[0] + '!';
     document.getElementById('result-email').textContent = 'Riley will follow up at ' + email2;
 
-    var icons = {'What You\'re Being Quoted':'📋','Equipment Breakdown':'⚙️','What\'s Included (and What\'s Not)':'✅','Price Assessment':'💰','Questions to Ask Before Signing':'❓','Riley\'s Take':'🎯'};
+    var icons = {'What You\'re Being Quoted':'[Proposal]','Equipment Breakdown':'[Equipment]','What\'s Included (and What\'s Not)':'[Included]','Price Assessment':'[Price]','Questions to Ask Before Signing':'[Questions]','Riley\'s Take':'[Riley]'};
     var sections = txt.split(/(?=^## )/m).filter(function(s) { return s.trim(); });
     var html = '';
     sections.forEach(function(sec) {
