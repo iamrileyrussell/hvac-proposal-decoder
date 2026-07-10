@@ -64,11 +64,13 @@ label{font-size:13px;font-weight:700;color:#374151}
   <div class="card">
     <div class="badge">STEP 1 OF 3</div>
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:10px">Upload Your Proposal</div>
-    <div class="zone" id="zone" style="position:relative">
-      <input type="file" id="fInput" accept=".pdf,image/*" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0;border:none">
+    <div class="zone" id="zone">
       <div style="font-size:30px;margin-bottom:8px">📄</div>
-      <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div>
-      <div style="color:#64748B;font-size:13px">PDF or photo</div>
+      <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap below to upload</div>
+      <div style="color:#64748B;font-size:13px;margin-bottom:12px">PDF or photo of your proposal</div>
+      <label for="fInput" style="display:inline-block;background:#C8873A;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">Choose File</label>
+      <input type="file" id="fInput" accept=".pdf,image/*" style="display:none">
+      <div id="fName" style="margin-top:8px;font-size:13px;color:#64748B"></div>
     </div>
   </div>
 
@@ -392,8 +394,7 @@ function reset(){
   document.getElementById('feedbackExtra').className='hidden';
   document.getElementById('feedbackThanks').className='hidden';
   var z=document.getElementById('zone');
-  z.style.position='relative';z.innerHTML='<input type="file" id="fInput" accept=".pdf,image/*" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;padding:0;border:none"><div style="font-size:30px;margin-bottom:8px">&#x1F4C4;</div><div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div><div style="color:#64748B;font-size:13px">PDF or photo</div>';
-  initZone();
+  document.getElementById('fName').textContent='';
   show('vStep1');
 }
 
