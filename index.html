@@ -14,12 +14,10 @@ body{font-family:Georgia,serif;background:#F8F4EF;min-height:100vh}
 input,select,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #E2E8F0;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none;margin-top:5px}
 textarea{resize:vertical;min-height:80px;line-height:1.5}
 label{font-size:13px;font-weight:700;color:#374151}
-.zone{border:2px dashed #CBD5E1;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;background:#F8FAFC}
-.zone2{border:2px dashed #C8873A;border-radius:12px;padding:20px 16px;text-align:center;cursor:pointer;background:#FFF8F0}
+.upload-area{border:2px dashed #CBD5E1;border-radius:12px;padding:28px 16px;text-align:center;background:#F8FAFC}
 .btn{width:100%;padding:16px;border-radius:12px;border:none;background:#C8873A;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:4px}
 .btn:disabled{background:#E2E8F0;color:#94A3B8;cursor:not-allowed}
 .btn-outline{width:100%;padding:13px;border-radius:12px;border:1.5px solid #CBD5E1;background:transparent;color:#64748B;font-family:inherit;font-size:14px;cursor:pointer;margin-top:10px}
-.btn-ghost{width:100%;padding:11px;border-radius:12px;border:1.5px dashed #C8873A;background:transparent;color:#C8873A;font-family:inherit;font-size:14px;cursor:pointer;margin-top:8px;font-weight:600}
 .hidden{display:none}
 .sec{background:#fff;border:1.5px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px}
 .sec.riley{background:#FFF8F0;border-color:#C8873A}
@@ -34,10 +32,10 @@ label{font-size:13px;font-weight:700;color:#374151}
 .q-opt:hover{border-color:#C8873A;background:#FFF8F0}
 .q-opt.sel{border-color:#C8873A;background:#FFF8F0;font-weight:700}
 .badge{display:inline-block;background:#1E293B;color:#C8873A;font-size:11px;font-weight:800;letter-spacing:.05em;padding:4px 10px;border-radius:20px;margin-bottom:10px}
-.feedback-box{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:16px;margin-top:12px}
 .stars{display:flex;gap:8px;margin-top:8px}
 .star{font-size:28px;cursor:pointer;opacity:.3;transition:opacity .15s}
 .star.lit{opacity:1}
+.feedback-box{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:16px;margin-top:12px}
 </style>
 </head>
 <body>
@@ -64,13 +62,13 @@ label{font-size:13px;font-weight:700;color:#374151}
   <div class="card">
     <div class="badge">STEP 1 OF 3</div>
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:10px">Upload Your Proposal</div>
-    <div class="zone" id="zone">
+    <div class="upload-area">
       <div style="font-size:30px;margin-bottom:8px">📄</div>
-      <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap below to upload</div>
-      <div style="color:#64748B;font-size:13px;margin-bottom:12px">PDF or photo of your proposal</div>
-      <label for="fInput" style="display:inline-block;background:#C8873A;color:#fff;padding:10px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer">Choose File</label>
+      <div style="font-weight:700;color:#1E293B;margin-bottom:6px">Select your proposal file</div>
+      <div style="color:#64748B;font-size:13px;margin-bottom:12px">PDF or photo</div>
+      <label for="fInput" style="display:inline-block;background:#C8873A;color:#fff;padding:11px 28px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:Georgia,serif">Choose File</label>
       <input type="file" id="fInput" accept=".pdf,image/*" style="display:none">
-      <div id="fName" style="margin-top:8px;font-size:13px;color:#64748B"></div>
+      <div id="fName" style="margin-top:10px;font-size:13px;color:#2E7D4F;font-weight:600;min-height:20px"></div>
     </div>
   </div>
 
@@ -93,8 +91,8 @@ label{font-size:13px;font-weight:700;color:#374151}
 
   <div class="card">
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:4px">Your Thoughts on the Proposal <span style="font-weight:400;color:#94A3B8;font-size:12px">(optional)</span></div>
-    <div style="color:#64748B;font-size:13px;margin-bottom:8px;line-height:1.5">How did the contractor explain things? How do you feel about the price? Anything on your mind — in your own words.</div>
-    <textarea id="iComments" placeholder="Example: &quot;The salesperson didn't explain much and I have no idea what I'm being offered&quot; or &quot;This feels really expensive compared to other quotes I've seen&quot;..."></textarea>
+    <div style="color:#64748B;font-size:13px;margin-bottom:8px;line-height:1.5">How did the contractor explain things? How do you feel about the price? Anything on your mind.</div>
+    <textarea id="iComments" placeholder="Example: &quot;The salesperson didn't explain much and I have no idea what I'm being offered&quot; or &quot;This feels really expensive&quot;..."></textarea>
   </div>
 
   <button class="btn" id="btnNext" disabled onclick="goStep2()">Next &rarr;</button>
@@ -152,10 +150,9 @@ label{font-size:13px;font-weight:700;color:#374151}
   </div>
   <div id="rSections"></div>
 
-  <!-- Post-analysis feedback -->
   <div class="feedback-box">
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:4px">Was this analysis helpful?</div>
-    <div style="color:#64748B;font-size:13px;margin-bottom:4px">Your feedback helps improve the tool.</div>
+    <div style="color:#64748B;font-size:13px">Your feedback helps improve the tool.</div>
     <div class="stars" id="starRow">
       <span class="star" onclick="rateStar(1)">⭐</span>
       <span class="star" onclick="rateStar(2)">⭐</span>
@@ -164,7 +161,7 @@ label{font-size:13px;font-weight:700;color:#374151}
       <span class="star" onclick="rateStar(5)">⭐</span>
     </div>
     <div id="feedbackExtra" class="hidden" style="margin-top:10px">
-      <textarea id="iFeedback" placeholder="Anything else you'd like to share about your experience?" style="margin-top:0"></textarea>
+      <textarea id="iFeedback" placeholder="Anything else you'd like to share?" style="margin-top:0"></textarea>
       <button class="btn" style="margin-top:8px;padding:12px;font-size:14px" onclick="submitFeedback()">Send Feedback</button>
     </div>
     <div id="feedbackThanks" class="hidden" style="margin-top:10px;color:#2E7D4F;font-weight:700;font-size:14px">Thank you! Your feedback means a lot. 🙏</div>
@@ -191,175 +188,18 @@ label{font-size:13px;font-weight:700;color:#374151}
 <script>
 var file=null,q1=null,q2=null,q3=null,starRating=0;
 
-
-function getSYS(zoned,usage,tenure,timeline,comments,hasSecond){
-  var zoningContext='';
-  if(zoned==='yes'){
-    zoningContext='ZONING FLAG — CRITICAL: This home has multiple HVAC systems or zones (multiple thermostats). This is the single most important factor in evaluating this proposal. A single-stage system on a zoned home is like breathing in through two nostrils and blowing out through a straw — the static pressure buildup will kill the system prematurely, often in under 10 years. A two-stage system is the bare minimum for a two-zone home. Variable speed is the best solution. If this proposal is offering a single-stage system for a zoned home, that must be clearly flagged in the "Is This the Right Fit?" section. Do not bury this concern — it is the most important thing the homeowner needs to know.';
-  } else if(zoned==='no'){
-    zoningContext='This is a single-zone, single-thermostat home. A single-stage system is an acceptable solution here, though two-stage or variable speed will provide better comfort and humidity control in Raleigh\'s climate.';
-  } else {
-    zoningContext='The homeowner was unsure about zoning. If the proposal mentions zones, dampers, or multiple thermostats, treat it as a zoned home.';
+document.getElementById('fInput').addEventListener('change',function(){
+  if(this.files&&this.files[0]){
+    file=this.files[0];
+    document.getElementById('fName').textContent='✅ '+file.name;
+    chk1();
   }
+});
 
-  var usageContext='';
-  if(usage==='occasional'||usage==='rarely'){
-    usageContext='USAGE: This space is used occasionally or rarely. A reliable single or two-stage system is the right call — a top-tier variable speed system is overkill here.';
-  } else {
-    usageContext='USAGE: This is a primary living space used daily. In Raleigh\'s humid summers, two-stage or variable speed will provide meaningfully better comfort and humidity control.';
-  }
-
-  var tenureContext='';
-  if(tenure==='forever'||tenure==='longterm'){
-    tenureContext='TENURE: Forever home or 10+ years. Stepping up to two-stage or variable speed makes the most sense — the homeowner will get their money\'s worth over time.';
-  } else if(tenure==='midterm'){
-    tenureContext='TENURE: 5-10 years. Two-stage is worth considering, but a quality single-stage from a reputable contractor is also a solid choice.';
-  } else {
-    tenureContext='TENURE: Less than 5 years. A solid single-stage system is the right recommendation — they are unlikely to recoup the cost of a premium system before selling. Exception: zoning infrastructure must still be addressed properly regardless of tenure.';
-  }
-
-  var timelineContext=timeline?'TIMELINE: '+timeline+'. Factor this into the tone — someone whose system is down needs urgency acknowledged; someone researching needs a thorough, patient breakdown.':'';
-
-  var commentsContext='';
-  if(comments&&comments.trim()){
-    commentsContext='HOMEOWNER\'S OWN WORDS ABOUT THIS PROPOSAL: "'+comments.trim()+'"\n\nThis is important context. If the homeowner says they have no idea what they were offered, that tells you the contractor did not take the time to educate them — address that directly and fill in the gaps. If they feel the price is too high, validate or correct that based on the market data. Tailor the tone and focus of your recommendation to directly respond to how this homeowner is feeling. Make them feel heard.';
-  }
-
-  var comparisonNote=hasSecond?'COMPARISON MODE: The homeowner has uploaded TWO proposals. Analyze both documents and provide a side-by-side comparison. In each section, clearly label the proposals as "Quote A" and "Quote B". At the end, give a clear recommendation on which one is the better fit and why. Be specific about the differences in scope, equipment, and price.':'';
-
-  var sections=hasSecond?
-`Analyze both uploaded proposals and respond in these exact sections. Label proposals as "Quote A" and "Quote B" throughout. Each section does ONE job. Do not repeat points across sections.
-
-## What You're Being Quoted
-Brief plain-English summary of each quote — system type, brand tier, and total price for Quote A and Quote B.
-
-## Scope of Work
-Compare what each contractor includes: load calculation, plenum replacement, line set, ductwork, permits, warranty. Call out clearly what each covers and what each is missing.
-
-## The Equipment
-For each quote: what brand tier, what type of system (single-stage, two-stage, variable speed). Plain language, no model numbers.
-
-## Is the Price Fair?
-Compare both prices to Raleigh fair market ranges. Straight verdict on each — good deal, fair, high, or red flag.
-
-## Is This the Right Fit?
-Does either or both systems match the home's zoning, usage, and how long the homeowner plans to stay? Flag any mismatches clearly.
-
-## Before You Sign — Ask These Questions
-3-5 questions the homeowner should ask whichever contractor they are leaning toward, based on gaps you see.
-
-## Riley's Recommendation
-Your honest pick between the two quotes. Which contractor would you trust with your home and why? Close with a trust-based, no-pressure next step.`
-:
-`Analyze the uploaded proposal and respond in these exact sections. Each section does ONE job. Do not repeat points across sections. Be specific to what is actually in this proposal.
-
-## What You're Being Quoted
-One short paragraph. Plain-English summary of the system type, brand, and total price. Facts only — no judgment here.
-
-## Scope of Work
-What is included in this proposal? Go through the checklist: load calculation, plenum replacement, line set, ductwork, permits, warranty terms. Call out clearly what is covered and what is missing or unclear.
-
-## The Equipment
-What brand tier is this? Is it a top-tier brand or a budget brand? What type of system — single-stage, two-stage, or variable speed? Keep it simple and jargon-free. Do not list model numbers.
-
-## Is the Price Fair?
-Compare the quoted price to Raleigh fair market ranges for this system type and size. Give a straight answer: good deal, fair, on the high side, or a red flag.
-
-## Is This the Right Fit?
-The most important section. Does this system match the home's zoning, the way the space is used, and how long the homeowner plans to stay?
-
-## Before You Sign — Ask These Questions
-3-5 specific questions this homeowner should ask the contractor before signing.
-
-## Riley's Recommendation
-Speak directly as Riley Russell. Give your honest, complete take. Factor in brand, price, scope, and fit. Close with a trust-based question and a soft, no-pressure next step.`;
-
-  return `You are Riley Russell, a professional HVAC Comfort Advisor in Raleigh, NC. You help homeowners understand their HVAC proposals honestly and in plain English. You are not a salesperson — you are an advisor. You give straight talk and always put the homeowner's best interest first, even if that means telling them a competitor's quote is a good one.
-
-Your core belief: HVAC replacement is one of the largest investments a homeowner will make. If the install is not done correctly, it can end up costing them double or triple what it would have cost to do it right the first time. You see bad installs every day — systems that failed early because the previous company cut corners, didn't pull permits, skipped the load calculation, or put in the wrong size. That is what you are protecting this homeowner from.
-
-YOUR VOICE: Warm, direct, plain-spoken. Talk like a trusted friend who knows HVAC, not a textbook. Explain technical terms immediately when you use them. Never fear-monger — empower. Say things once, clearly. No repetition across sections.
-
----
-
-BRAND KNOWLEDGE:
-Top-tier brands: Lennox, Trane, Carrier. Built to last 15-20 years with proper maintenance and a quality install.
-Budget brands to watch out for: Goodman, Amana, York, Coleman. More likely to fail before 10 years.
-
-Brand matters less than most homeowners think. About 90% of HVAC installs are done wrong. The biggest thing a homeowner is buying is the INSTALL — the hands putting in the equipment. A quality install of a good-but-not-great brand will outlast a sloppy install of the best brand on the market.
-
----
-
-LENNOX TIER KNOWLEDGE (generalize by tier — do not list model numbers in output):
-- Merit Series: Working man's unit. Single-stage is the base. The two-stage Merit AC is great bang-for-buck and is COMMONLY and CORRECTLY paired with an Elite-tier furnace — this is a normal, smart pairing, NOT a mismatch.
-- Elite Series: Middle of the road. Great bang for your buck. The current 90% efficient Elite furnace (EL297) is current and widely used in this region — do not flag it as outdated.
-- Signature Series: Lennox's best. Variable speed, fully communicating. Paired with the best 99% efficient furnace.
-- As Lennox has released higher-end variable speed equipment, two-stage technology has migrated down to the Merit line. A two-stage Merit AC reflects where that technology lives today — it is not a downgrade.
-
----
-
-RALEIGH FAIR MARKET PRICING (complete install, 80% furnace base — 90% furnace adds ~$1,500-$2,000):
-
-Single-Stage (Merit):
-- 2 ton: $13,000-$14,000 | 2.5 ton: $13,600-$14,300 | 3 ton: $14,200-$15,000
-- 3.5 ton: $15,000-$15,800 | 4 ton: $15,700-$16,500 | 5 ton: $17,000-$17,900
-
-Two-Stage (Merit AC + Elite furnace):
-- 2.5 ton: $15,800-$17,000 | 3 ton: $16,500-$17,900 | 4 ton: $18,000-$19,500 | 5 ton: $19,300-$20,700
-
-Variable Speed — Elite tier:
-- 2 ton: $17,500-$21,800 | 2.5 ton: $17,550-$23,500 | 3.5 ton: $19,800-$25,300 | 4 ton: $21,500-$26,200
-
-Variable Speed — Signature tier:
-- 2 ton: $25,000 | 2.5 ton: $25,700-$26,700 | 3.5 ton: $27,500 | 4 ton: $28,800-$29,000
-
-PRICING PHILOSOPHY: A reputable licensed contractor at the lower end of market with a complete scope is being competitive — not cutting corners. Red flags: significantly below $10,000 AND company is hard to verify AND no permits AND obvious scope gaps. Like getting a tattoo from someone charging half the going rate — the risk is real. About 70% of HVAC companies fail in their first year.
-
----
-
-SCOPE OF WORK — flag if missing or unclear:
-- Manual J load calculation (required by city code before any replacement)
-- Supply AND return plenum replacement
-- Line set evaluation (right size, nitrogen-flushed and evacuated to ~300 microns if reused)
-- Ductwork sizing (must match the system)
-- Permits (no permit = red flag)
-- Warranty (2-year labor + 2 years maintenance is the strong standard; 10-year parts requires registration and annual maintenance)
-
----
-
-${zoningContext}
-
-${usageContext}
-
-${tenureContext}
-
-${timelineContext}
-
-${commentsContext}
-
-${comparisonNote}
-
----
-
-${sections}`;
+function chk1(){
+  var ok=file&&document.getElementById('iName').value.trim()&&document.getElementById('iEmail').value.trim();
+  document.getElementById('btnNext').disabled=!ok;
 }
-
-function initZone(){
-  document.getElementById('zone').onclick=function(){document.getElementById('fInput').click();};
-  document.getElementById('fInput').onchange=function(e){
-    if(e.target.files[0]){
-      file=e.target.files[0];
-      var z=document.getElementById('zone');
-      z.innerHTML='<div style="font-size:26px;margin-bottom:6px">&#x2705;</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file.name+'</div><div style="color:#64748B;font-size:12px;margin-top:3px">Tap to change</div><input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">';
-      initZone();chk1();
-    }
-  };
-}
-  };
-}
-initZone();
-
-function chk1(){var ok=file&&document.getElementById('iName').value.trim()&&document.getElementById('iEmail').value.trim();document.getElementById('btnNext').disabled=!ok;}
 document.getElementById('iName').oninput=chk1;
 document.getElementById('iEmail').oninput=chk1;
 
@@ -387,15 +227,45 @@ function reset(){
   file=null;q1=null;q2=null;q3=null;starRating=0;
   ['iName','iEmail','iAddr','iComments','iFeedback'].forEach(function(i){var el=document.getElementById(i);if(el)el.value='';});
   document.getElementById('iTime').value='';
+  document.getElementById('fName').textContent='';
   document.getElementById('btnNext').disabled=true;
   document.getElementById('btnGo').disabled=true;
   ['q1a','q1b','q1c','q2a','q2b','q2c','q3a','q3b','q3c','q3d'].forEach(function(i){document.getElementById(i).className='q-opt';});
   document.querySelectorAll('.star').forEach(function(s){s.className='star';});
   document.getElementById('feedbackExtra').className='hidden';
   document.getElementById('feedbackThanks').className='hidden';
-  var z=document.getElementById('zone');
-  document.getElementById('fName').textContent='';
   show('vStep1');
+}
+
+function getSYS(zoned,usage,tenure,timeline,comments){
+  var zoningContext='';
+  if(zoned==='yes'){
+    zoningContext='ZONING FLAG — CRITICAL: This home has multiple HVAC systems or zones (multiple thermostats). This is the single most important factor in evaluating this proposal. A single-stage system on a zoned home is like breathing in through two nostrils and blowing out through a straw — the static pressure buildup will kill the system prematurely, often in under 10 years. A two-stage system is the bare minimum for a two-zone home. Variable speed is the best solution. If this proposal is offering a single-stage system for a zoned home, that must be clearly flagged in the "Is This the Right Fit?" section. Do not bury this concern — it is the most important thing the homeowner needs to know.';
+  } else if(zoned==='no'){
+    zoningContext='This is a single-zone, single-thermostat home. A single-stage system is an acceptable solution here, though two-stage or variable speed will provide better comfort and humidity control in Raleigh\'s climate.';
+  } else {
+    zoningContext='The homeowner was unsure about zoning. If the proposal mentions zones, dampers, or multiple thermostats, treat it as a zoned home.';
+  }
+  var usageContext='';
+  if(usage==='occasional'||usage==='rarely'){
+    usageContext='USAGE: This space is used occasionally or rarely. A reliable single or two-stage system is the right call — a top-tier variable speed system is overkill here.';
+  } else {
+    usageContext='USAGE: This is a primary living space used daily. In Raleigh\'s humid summers, two-stage or variable speed will provide meaningfully better comfort and humidity control.';
+  }
+  var tenureContext='';
+  if(tenure==='forever'||tenure==='longterm'){
+    tenureContext='TENURE: Forever home or 10+ years. Stepping up to two-stage or variable speed makes the most sense — the homeowner will get their money\'s worth over time.';
+  } else if(tenure==='midterm'){
+    tenureContext='TENURE: 5-10 years. Two-stage is worth considering, but a quality single-stage from a reputable contractor is also a solid choice.';
+  } else {
+    tenureContext='TENURE: Less than 5 years. A solid single-stage system is the right recommendation — they are unlikely to recoup the cost of a premium system before selling. Exception: zoning infrastructure must still be addressed properly regardless of tenure.';
+  }
+  var timelineContext=timeline?'TIMELINE: '+timeline+'. Factor this into the tone.':'';
+  var commentsContext='';
+  if(comments&&comments.trim()){
+    commentsContext='HOMEOWNER\'S OWN WORDS: "'+comments.trim()+'"\nThis is important context. If they say they have no idea what they were offered, the contractor failed to educate them — address that directly. If they feel the price is too high, validate or correct that based on market data. Make them feel heard.';
+  }
+  return 'You are Riley Russell, a professional HVAC Comfort Advisor in Raleigh, NC. You help homeowners understand their HVAC proposals honestly and in plain English. You are not a salesperson — you are an advisor. You give straight talk and always put the homeowner\'s best interest first, even if that means telling them a competitor\'s quote is a good one.\n\nYour core belief: HVAC replacement is one of the largest investments a homeowner will make. If the install is not done correctly, it can end up costing them double or triple what it would have cost to do it right the first time. About 90% of HVAC installs are done wrong. The biggest thing a homeowner is buying is the INSTALL — the hands putting in the equipment.\n\nYOUR VOICE: Warm, direct, plain-spoken. Talk like a trusted friend who knows HVAC. Explain technical terms immediately. Never fear-monger — empower. Say things once, clearly. No repetition across sections.\n\nBRAND KNOWLEDGE:\nTop-tier: Lennox, Trane, Carrier. Built to last 15-20 years with proper maintenance.\nBudget brands: Goodman, Amana, York, Coleman. More likely to fail before 10 years.\n\nLENNOX TIERS (do not list model numbers in output):\n- Merit: Working man\'s unit. Two-stage Merit AC is great bang-for-buck and is COMMONLY and CORRECTLY paired with an Elite furnace — this is normal, NOT a mismatch.\n- Elite: Middle of the road, great bang for buck. Current 90% Elite furnace (EL297) is current and widely used — do NOT flag as outdated.\n- Signature: Best of the best. Variable speed, fully communicating.\n- Two-stage technology has migrated down to Merit as Lennox released higher-end variable speed lines. This is not a downgrade.\n\nRALEIGH FAIR MARKET PRICING (complete install, 80% furnace — 90% adds ~$1,500-$2,000):\nSingle-Stage: 2t $13-14K | 2.5t $13.6-14.3K | 3t $14.2-15K | 3.5t $15-15.8K | 4t $15.7-16.5K | 5t $17-17.9K\nTwo-Stage (Merit AC + Elite furnace): 2.5t $15.8-17K | 3t $16.5-17.9K | 4t $18-19.5K | 5t $19.3-20.7K\nVariable Speed Elite: 2t $17.5-21.8K | 2.5t $17.6-23.5K | 3.5t $19.8-25.3K | 4t $21.5-26.2K\nVariable Speed Signature: 2t $25K | 2.5t $25.7-26.7K | 3.5t $27.5K | 4t $28.8-29K\n\nPRICING: Reputable contractor at lower end of market with complete scope = competitive, not cutting corners. Red flags: below $10K AND unverifiable company AND no permits AND missing scope. Like getting a tattoo from someone charging half the going rate — 70% of HVAC companies fail year one.\n\nSCOPE CHECKLIST (flag if missing):\n- Manual J load calculation (required by city code)\n- Supply AND return plenum replacement\n- Line set evaluation (right size; if reused, nitrogen-flushed and vacuumed to ~300 microns)\n- Ductwork sizing\n- Permits (no permit = red flag)\n- Warranty (2-yr labor + 2 yrs maintenance is the strong standard; 10-yr parts requires registration and annual maintenance)\n\n'+zoningContext+'\n\n'+usageContext+'\n\n'+tenureContext+'\n\n'+timelineContext+'\n\n'+commentsContext+'\n\nAnalyze the uploaded proposal and respond in these exact sections. Each section does ONE job. Do not repeat points across sections.\n\n## What You\'re Being Quoted\nOne short paragraph. Plain-English summary of the system type, brand, and total price. Facts only.\n\n## Scope of Work\nWhat is included? Go through the checklist. Call out what is covered and what is missing or unclear.\n\n## The Equipment\nBrand tier, system type (single/two-stage/variable speed). Plain language, no model numbers.\n\n## Is the Price Fair?\nCompare to Raleigh fair market by system type and size. Straight answer: good deal, fair, high, or red flag.\n\n## Is This the Right Fit?\nDoes this system match the home\'s zoning, usage, and tenure? Flag mismatches clearly.\n\n## Before You Sign — Ask These Questions\n3-5 specific questions based on gaps in this proposal.\n\n## Riley\'s Recommendation\nHonest complete take as Riley Russell. Would you tell a friend to sign this? Close with a trust-based, no-pressure next step.';
 }
 
 function go(){
@@ -404,17 +274,14 @@ function go(){
   var addr=document.getElementById('iAddr').value.trim();
   var time=document.getElementById('iTime').value;
   var comments=document.getElementById('iComments').value.trim();
-  var hasSecond=false;
   show('vLoad');
   var isImg=file.type.startsWith('image/');
   var p=isImg?resz(file):b64(file);
   p.then(function(data){
     var mime=isImg?'image/jpeg':'application/pdf';
     var blk=isImg?{type:'image',source:{type:'base64',media_type:mime,data:data}}:{type:'document',source:{type:'base64',media_type:mime,data:data}};
-    var contentArr=[blk];
-    var txt='Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'.'
-    contentArr.push({type:'text',text:txt});
-    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:getSYS(q1,q2,q3,time,comments,hasSecond),messages:[{role:'user',content:contentArr}],lead:{name:name,email:email,addr:addr,timeline:time,zoned:q1,usage:q2,tenure:q3,comments:comments}})});
+    var txt='Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'.';
+    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:getSYS(q1,q2,q3,time,comments),messages:[{role:'user',content:[blk,{type:'text',text:txt}]}],lead:{name:name,email:email,addr:addr,timeline:time,zoned:q1,usage:q2,tenure:q3,comments:comments}})});
   }).then(function(r){return r.text().then(function(raw){
     var j;try{j=JSON.parse(raw);}catch(e){throw new Error('Bad response: '+raw.slice(0,200));}
     if(j.error)throw new Error(j.error.message||JSON.stringify(j.error));
