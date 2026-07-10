@@ -6,6 +6,32 @@ export default async function handler(req, res) {
   try {
     const body = req.body || {};
 
+    // Handle call request
+    if (body.callRequest) {
+      const L = body.lead || {};
+      const esc = s => String(s || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.RESEND_API_KEY}` },
+        body: JSON.stringify({
+          from: 'HVAC Proposal Decoder <leads@askrileyhvac.com>',
+          to: 'askrileyhvac@gmail.com',
+          reply_to: L.email || undefined,
+          subject: `📞 Call Request: ${esc(L.name) || 'A homeowner'} wants to talk`,
+          html: `
+            <h2>📞 Free Call Request</h2>
+            <p style="font-size:16px"><strong>${esc(L.name) || 'A homeowner'}</strong> just requested a free 15-minute call after reading their proposal analysis.</p>
+            <table style="font-family:Arial,sans-serif;font-size:14px;line-height:1.8">
+              <tr><td style="padding-right:16px"><strong>Name:</strong></td><td>${esc(L.name) || '—'}</td></tr>
+              <tr><td><strong>Email:</strong></td><td>${esc(L.email) || '—'}</td></tr>
+            </table>
+            <p style="margin-top:16px;font-size:14px;color:#64748B">Reach out to them directly to get a call scheduled.</p>
+          `
+        })
+      });
+      return res.status(200).json({ ok: true });
+    }
+
     // Handle feedback-only submissions
     if (body.feedback) {
       const L = body.lead || {};
