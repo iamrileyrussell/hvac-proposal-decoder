@@ -11,12 +11,15 @@ body{font-family:Georgia,serif;background:#F8F4EF;min-height:100vh}
 .avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #C8873A}
 .wrap{max-width:500px;margin:0 auto;padding:20px 16px 60px}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
-input,select{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #E2E8F0;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none;margin-top:5px}
+input,select,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #E2E8F0;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none;margin-top:5px}
+textarea{resize:vertical;min-height:80px;line-height:1.5}
 label{font-size:13px;font-weight:700;color:#374151}
 .zone{border:2px dashed #CBD5E1;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;background:#F8FAFC}
+.zone2{border:2px dashed #C8873A;border-radius:12px;padding:20px 16px;text-align:center;cursor:pointer;background:#FFF8F0}
 .btn{width:100%;padding:16px;border-radius:12px;border:none;background:#C8873A;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:4px}
 .btn:disabled{background:#E2E8F0;color:#94A3B8;cursor:not-allowed}
 .btn-outline{width:100%;padding:13px;border-radius:12px;border:1.5px solid #CBD5E1;background:transparent;color:#64748B;font-family:inherit;font-size:14px;cursor:pointer;margin-top:10px}
+.btn-ghost{width:100%;padding:11px;border-radius:12px;border:1.5px dashed #C8873A;background:transparent;color:#C8873A;font-family:inherit;font-size:14px;cursor:pointer;margin-top:8px;font-weight:600}
 .hidden{display:none}
 .sec{background:#fff;border:1.5px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px}
 .sec.riley{background:#FFF8F0;border-color:#C8873A}
@@ -31,6 +34,10 @@ label{font-size:13px;font-weight:700;color:#374151}
 .q-opt:hover{border-color:#C8873A;background:#FFF8F0}
 .q-opt.sel{border-color:#C8873A;background:#FFF8F0;font-weight:700}
 .badge{display:inline-block;background:#1E293B;color:#C8873A;font-size:11px;font-weight:800;letter-spacing:.05em;padding:4px 10px;border-radius:20px;margin-bottom:10px}
+.feedback-box{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:16px;margin-top:12px}
+.stars{display:flex;gap:8px;margin-top:8px}
+.star{font-size:28px;cursor:pointer;opacity:.3;transition:opacity .15s}
+.star.lit{opacity:1}
 </style>
 </head>
 <body>
@@ -63,6 +70,18 @@ label{font-size:13px;font-weight:700;color:#374151}
       <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div>
       <div style="color:#64748B;font-size:13px">PDF or photo</div>
     </div>
+    <!-- Second proposal (optional) -->
+    <div id="addSecondWrap" class="hidden" style="margin-top:12px">
+      <div style="font-size:12px;font-weight:700;color:#C8873A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Comparing a second proposal (optional)</div>
+      <div class="zone2" id="zone2">
+        <input type="file" id="fInput2" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">
+        <div style="font-size:24px;margin-bottom:6px">📄</div>
+        <div style="font-weight:700;color:#C8873A;margin-bottom:3px;font-size:14px">Tap to upload second proposal</div>
+        <div style="color:#94A3B8;font-size:12px">I'll compare them side by side</div>
+      </div>
+      <button class="btn-ghost" onclick="removeSecond()" style="margin-top:6px;font-size:12px">✕ Remove second proposal</button>
+    </div>
+    <button class="btn-ghost" id="btnAddSecond" onclick="showSecond()">+ Compare a second proposal</button>
   </div>
 
   <div class="card">
@@ -80,6 +99,12 @@ label{font-size:13px;font-weight:700;color:#374151}
         <option>Just researching for now</option>
       </select>
     </label>
+  </div>
+
+  <div class="card">
+    <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:4px">Your Thoughts on the Proposal <span style="font-weight:400;color:#94A3B8;font-size:12px">(optional)</span></div>
+    <div style="color:#64748B;font-size:13px;margin-bottom:8px;line-height:1.5">How did the contractor explain things? How do you feel about the price? Anything on your mind — in your own words.</div>
+    <textarea id="iComments" placeholder="Example: &quot;The salesperson didn't explain much and I have no idea what I'm being offered&quot; or &quot;This feels really expensive compared to other quotes I've seen&quot;..."></textarea>
   </div>
 
   <button class="btn" id="btnNext" disabled onclick="goStep2()">Next &rarr;</button>
@@ -136,7 +161,26 @@ label{font-size:13px;font-weight:700;color:#374151}
     <div style="font-size:12px;opacity:.85" id="rEmail"></div>
   </div>
   <div id="rSections"></div>
-  <div class="cta-box">
+
+  <!-- Post-analysis feedback -->
+  <div class="feedback-box">
+    <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:4px">Was this analysis helpful?</div>
+    <div style="color:#64748B;font-size:13px;margin-bottom:4px">Your feedback helps improve the tool.</div>
+    <div class="stars" id="starRow">
+      <span class="star" onclick="rateStar(1)">⭐</span>
+      <span class="star" onclick="rateStar(2)">⭐</span>
+      <span class="star" onclick="rateStar(3)">⭐</span>
+      <span class="star" onclick="rateStar(4)">⭐</span>
+      <span class="star" onclick="rateStar(5)">⭐</span>
+    </div>
+    <div id="feedbackExtra" class="hidden" style="margin-top:10px">
+      <textarea id="iFeedback" placeholder="Anything else you'd like to share about your experience?" style="margin-top:0"></textarea>
+      <button class="btn" style="margin-top:8px;padding:12px;font-size:14px" onclick="submitFeedback()">Send Feedback</button>
+    </div>
+    <div id="feedbackThanks" class="hidden" style="margin-top:10px;color:#2E7D4F;font-weight:700;font-size:14px">Thank you! Your feedback means a lot. 🙏</div>
+  </div>
+
+  <div class="cta-box" style="margin-top:12px">
     <img src="Headshot.jpg" alt="Riley Russell" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid #C8873A;margin-bottom:12px" onerror="this.style.display='none'">
     <div style="color:#F8FAFC;font-size:15px;font-weight:700;margin-bottom:5px">Want to talk it through with Riley?</div>
     <div style="color:#94A3B8;font-size:13px;margin-bottom:14px">Free 15-min call. No pressure. No sales pitch. Just straight answers.</div>
@@ -155,10 +199,20 @@ label{font-size:13px;font-weight:700;color:#374151}
 
 </div>
 <script>
-var file=null,q1=null,q2=null,q3=null;
+var file=null,file2=null,q1=null,q2=null,q3=null,starRating=0;
 
-function getSYS(zoned,usage,tenure,timeline){
+function showSecond(){
+  document.getElementById('addSecondWrap').className='';
+  document.getElementById('btnAddSecond').className='hidden';
+  initZone2();
+}
+function removeSecond(){
+  file2=null;
+  document.getElementById('addSecondWrap').className='hidden';
+  document.getElementById('btnAddSecond').className='btn-ghost';
+}
 
+function getSYS(zoned,usage,tenure,timeline,comments,hasSecond){
   var zoningContext='';
   if(zoned==='yes'){
     zoningContext='ZONING FLAG — CRITICAL: This home has multiple HVAC systems or zones (multiple thermostats). This is the single most important factor in evaluating this proposal. A single-stage system on a zoned home is like breathing in through two nostrils and blowing out through a straw — the static pressure buildup will kill the system prematurely, often in under 10 years. A two-stage system is the bare minimum for a two-zone home. Variable speed is the best solution. If this proposal is offering a single-stage system for a zoned home, that must be clearly flagged in the "Is This the Right Fit?" section. Do not bury this concern — it is the most important thing the homeowner needs to know.';
@@ -186,6 +240,60 @@ function getSYS(zoned,usage,tenure,timeline){
 
   var timelineContext=timeline?'TIMELINE: '+timeline+'. Factor this into the tone — someone whose system is down needs urgency acknowledged; someone researching needs a thorough, patient breakdown.':'';
 
+  var commentsContext='';
+  if(comments&&comments.trim()){
+    commentsContext='HOMEOWNER\'S OWN WORDS ABOUT THIS PROPOSAL: "'+comments.trim()+'"\n\nThis is important context. If the homeowner says they have no idea what they were offered, that tells you the contractor did not take the time to educate them — address that directly and fill in the gaps. If they feel the price is too high, validate or correct that based on the market data. Tailor the tone and focus of your recommendation to directly respond to how this homeowner is feeling. Make them feel heard.';
+  }
+
+  var comparisonNote=hasSecond?'COMPARISON MODE: The homeowner has uploaded TWO proposals. Analyze both documents and provide a side-by-side comparison. In each section, clearly label the proposals as "Quote A" and "Quote B". At the end, give a clear recommendation on which one is the better fit and why. Be specific about the differences in scope, equipment, and price.':'';
+
+  var sections=hasSecond?
+`Analyze both uploaded proposals and respond in these exact sections. Label proposals as "Quote A" and "Quote B" throughout. Each section does ONE job. Do not repeat points across sections.
+
+## What You're Being Quoted
+Brief plain-English summary of each quote — system type, brand tier, and total price for Quote A and Quote B.
+
+## Scope of Work
+Compare what each contractor includes: load calculation, plenum replacement, line set, ductwork, permits, warranty. Call out clearly what each covers and what each is missing.
+
+## The Equipment
+For each quote: what brand tier, what type of system (single-stage, two-stage, variable speed). Plain language, no model numbers.
+
+## Is the Price Fair?
+Compare both prices to Raleigh fair market ranges. Straight verdict on each — good deal, fair, high, or red flag.
+
+## Is This the Right Fit?
+Does either or both systems match the home's zoning, usage, and how long the homeowner plans to stay? Flag any mismatches clearly.
+
+## Before You Sign — Ask These Questions
+3-5 questions the homeowner should ask whichever contractor they are leaning toward, based on gaps you see.
+
+## Riley's Recommendation
+Your honest pick between the two quotes. Which contractor would you trust with your home and why? Close with a trust-based, no-pressure next step.`
+:
+`Analyze the uploaded proposal and respond in these exact sections. Each section does ONE job. Do not repeat points across sections. Be specific to what is actually in this proposal.
+
+## What You're Being Quoted
+One short paragraph. Plain-English summary of the system type, brand, and total price. Facts only — no judgment here.
+
+## Scope of Work
+What is included in this proposal? Go through the checklist: load calculation, plenum replacement, line set, ductwork, permits, warranty terms. Call out clearly what is covered and what is missing or unclear.
+
+## The Equipment
+What brand tier is this? Is it a top-tier brand or a budget brand? What type of system — single-stage, two-stage, or variable speed? Keep it simple and jargon-free. Do not list model numbers.
+
+## Is the Price Fair?
+Compare the quoted price to Raleigh fair market ranges for this system type and size. Give a straight answer: good deal, fair, on the high side, or a red flag.
+
+## Is This the Right Fit?
+The most important section. Does this system match the home's zoning, the way the space is used, and how long the homeowner plans to stay?
+
+## Before You Sign — Ask These Questions
+3-5 specific questions this homeowner should ask the contractor before signing.
+
+## Riley's Recommendation
+Speak directly as Riley Russell. Give your honest, complete take. Factor in brand, price, scope, and fit. Close with a trust-based question and a soft, no-pressure next step.`;
+
   return `You are Riley Russell, a professional HVAC Comfort Advisor in Raleigh, NC. You help homeowners understand their HVAC proposals honestly and in plain English. You are not a salesperson — you are an advisor. You give straight talk and always put the homeowner's best interest first, even if that means telling them a competitor's quote is a good one.
 
 Your core belief: HVAC replacement is one of the largest investments a homeowner will make. If the install is not done correctly, it can end up costing them double or triple what it would have cost to do it right the first time. You see bad installs every day — systems that failed early because the previous company cut corners, didn't pull permits, skipped the load calculation, or put in the wrong size. That is what you are protecting this homeowner from.
@@ -195,47 +303,47 @@ YOUR VOICE: Warm, direct, plain-spoken. Talk like a trusted friend who knows HVA
 ---
 
 BRAND KNOWLEDGE:
-Top-tier brands: Lennox, Trane, Carrier. Built to last 15-20 years with proper maintenance and a quality install. A proposal from a reputable licensed contractor with any of these brands at a fair price is a solid investment.
-Budget brands to watch out for: Goodman, Amana, York, Coleman. More likely to fail before 10 years. If a contractor proposes a budget brand at a premium price, that is a red flag.
+Top-tier brands: Lennox, Trane, Carrier. Built to last 15-20 years with proper maintenance and a quality install.
+Budget brands to watch out for: Goodman, Amana, York, Coleman. More likely to fail before 10 years.
 
-Important: brand matters less than most homeowners think. About 90% of HVAC installs are done wrong. The biggest thing a homeowner is buying is the INSTALL — the hands putting in the equipment. A quality install of a good-but-not-great brand will outlast a sloppy install of the best brand on the market. Modern systems are not built like the ones from the 90s and 2000s — they are more sensitive and will fail faster when the install is poor or the ductwork is not sized right.
-
----
-
-LENNOX TIER KNOWLEDGE (do not reference specific model numbers in the output — generalize by tier):
-- Merit Series: The working man's unit. Proven, dependable, gets the job done. Single-stage is the base offering. The two-stage Merit AC is excellent bang-for-buck and is COMMONLY and CORRECTLY paired with an Elite-tier furnace — this is a normal, smart pairing, NOT a mismatch. Do not flag a Merit AC + Elite furnace combination as a problem.
-- Elite Series: Middle of the road. Great bang for your buck. Two-stage and variable capacity options. The current 90% efficient Elite furnace (EL297) is what Streamline Services uses in this region — it is current, not outdated.
-- Signature Series: Lennox's best. Variable speed, fully communicating, top efficiency and comfort. Paired with the best 99% efficient furnace (SLP99).
-- Key insight: As Lennox has released higher-end variable speed equipment, the two-stage technology has migrated DOWN from Signature to Merit. So a two-stage Merit AC is not a "downgrade" — it reflects where that technology lives in today's lineup.
+Brand matters less than most homeowners think. About 90% of HVAC installs are done wrong. The biggest thing a homeowner is buying is the INSTALL — the hands putting in the equipment. A quality install of a good-but-not-great brand will outlast a sloppy install of the best brand on the market.
 
 ---
 
-RALEIGH FAIR MARKET PRICING (complete install, 80% furnace base — 90% furnace adds approximately $1,500-$2,000):
+LENNOX TIER KNOWLEDGE (generalize by tier — do not list model numbers in output):
+- Merit Series: Working man's unit. Single-stage is the base. The two-stage Merit AC is great bang-for-buck and is COMMONLY and CORRECTLY paired with an Elite-tier furnace — this is a normal, smart pairing, NOT a mismatch.
+- Elite Series: Middle of the road. Great bang for your buck. The current 90% efficient Elite furnace (EL297) is current and widely used in this region — do not flag it as outdated.
+- Signature Series: Lennox's best. Variable speed, fully communicating. Paired with the best 99% efficient furnace.
+- As Lennox has released higher-end variable speed equipment, two-stage technology has migrated down to the Merit line. A two-stage Merit AC reflects where that technology lives today — it is not a downgrade.
+
+---
+
+RALEIGH FAIR MARKET PRICING (complete install, 80% furnace base — 90% furnace adds ~$1,500-$2,000):
 
 Single-Stage (Merit):
 - 2 ton: $13,000-$14,000 | 2.5 ton: $13,600-$14,300 | 3 ton: $14,200-$15,000
 - 3.5 ton: $15,000-$15,800 | 4 ton: $15,700-$16,500 | 5 ton: $17,000-$17,900
 
-Two-Stage (Merit AC + Elite furnace — the common pairing):
+Two-Stage (Merit AC + Elite furnace):
 - 2.5 ton: $15,800-$17,000 | 3 ton: $16,500-$17,900 | 4 ton: $18,000-$19,500 | 5 ton: $19,300-$20,700
 
 Variable Speed — Elite tier:
 - 2 ton: $17,500-$21,800 | 2.5 ton: $17,550-$23,500 | 3.5 ton: $19,800-$25,300 | 4 ton: $21,500-$26,200
 
-Variable Speed — Signature tier (best of the best):
+Variable Speed — Signature tier:
 - 2 ton: $25,000 | 2.5 ton: $25,700-$26,700 | 3.5 ton: $27,500 | 4 ton: $28,800-$29,000
 
-PRICING PHILOSOPHY: A reputable licensed contractor offering a solid system at the lower end of the market range with a complete scope of work is being competitive — not cutting corners. The red flags for pricing are: significantly below $10,000 for a full install AND the company is hard to verify AND permits are not being pulled AND scope of work has obvious gaps. Getting a tattoo from someone who charges half the going rate is a risk — the same logic applies here. About 70% of HVAC companies fail in their first year. A company that cannot be profitable cannot stand behind their work.
+PRICING PHILOSOPHY: A reputable licensed contractor at the lower end of market with a complete scope is being competitive — not cutting corners. Red flags: significantly below $10,000 AND company is hard to verify AND no permits AND obvious scope gaps. Like getting a tattoo from someone charging half the going rate — the risk is real. About 70% of HVAC companies fail in their first year.
 
 ---
 
-SCOPE OF WORK — what a quality install must include (flag if missing or unclear):
-- Manual J load calculation: Required by city code before any system replacement in Raleigh. This is not optional — it ensures the right size system for the home. Efficiency regulation changes and refrigerant updates can shift BTU output; skipping the load calc risks putting in the wrong size.
-- Supply AND return plenum replacement: Reusing old plenums risks air quality issues and poor fit with new equipment.
-- Line set evaluation: Is it the right size for the new system? If reused, was it properly nitrogen-flushed and evacuated to ~300 microns? If tonnage changes, the line set may need to be replaced.
-- Ductwork sizing: Must match the system. Undersized ductwork chokes a good system and builds static pressure.
-- Permits: A reputable contractor always pulls permits. No permit is a red flag — full stop.
-- Warranty: Look for a 2-year labor warranty with 2 years of maintenance included (this is the Streamline standard; most companies only offer 1 year). Ask if a 10-year labor warranty is available and at what cost. The manufacturer's 10-year parts warranty requires registration (5 years if unregistered) and annual maintenance per fine print.
+SCOPE OF WORK — flag if missing or unclear:
+- Manual J load calculation (required by city code before any replacement)
+- Supply AND return plenum replacement
+- Line set evaluation (right size, nitrogen-flushed and evacuated to ~300 microns if reused)
+- Ductwork sizing (must match the system)
+- Permits (no permit = red flag)
+- Warranty (2-year labor + 2 years maintenance is the strong standard; 10-year parts requires registration and annual maintenance)
 
 ---
 
@@ -247,30 +355,13 @@ ${tenureContext}
 
 ${timelineContext}
 
+${commentsContext}
+
+${comparisonNote}
+
 ---
 
-Analyze the uploaded proposal and respond in these exact sections. Each section does ONE job. Do not repeat points across sections. Be specific to what is actually in this proposal.
-
-## What You're Being Quoted
-One short paragraph. Plain-English summary of the system type, brand, and total price. Facts only — no judgment here.
-
-## Scope of Work
-What is included in this proposal? Go through the checklist: load calculation, plenum replacement, line set, ductwork, permits, warranty terms. Call out clearly what is covered and what is missing or unclear. This is where corners get cut — be specific.
-
-## The Equipment
-What brand tier is this? Is it a top-tier brand or a budget brand? What type of system — single-stage, two-stage, or variable speed? Keep it simple and jargon-free. Do not list model numbers — speak in plain terms a homeowner understands.
-
-## Is the Price Fair?
-Compare the quoted price to Raleigh fair market ranges for this system type and size. Give a straight answer: good deal, fair, on the high side, or a red flag. If pricing is fair or competitive, say so clearly — do not manufacture concerns.
-
-## Is This the Right Fit?
-The most important section. Does this system match the home's zoning, the way the space is used, and how long the homeowner plans to stay? If there is a zoning mismatch (single-stage on a zoned home), make it the centerpiece of this section — explain it clearly without technical jargon.
-
-## Before You Sign — Ask These Questions
-3-5 specific questions this homeowner should ask the contractor before signing. Base them on what is missing or unclear in this specific proposal.
-
-## Riley's Recommendation
-Speak directly as Riley Russell. Give your honest, complete take — would you tell a friend to sign this or not, and why? Factor in the brand, the price, the scope, the fit for their home and situation. Close with a trust-based question and a soft, no-pressure next step. This should feel like advice from a trusted friend who happens to know HVAC inside and out — not a sales pitch.`;
+${sections}`;
 }
 
 function initZone(){
@@ -281,6 +372,17 @@ function initZone(){
       var z=document.getElementById('zone');
       z.innerHTML='<div style="font-size:26px;margin-bottom:6px">&#x2705;</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file.name+'</div><div style="color:#64748B;font-size:12px;margin-top:3px">Tap to change</div><input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">';
       initZone();chk1();
+    }
+  };
+}
+function initZone2(){
+  document.getElementById('zone2').onclick=function(){document.getElementById('fInput2').click();};
+  document.getElementById('fInput2').onchange=function(e){
+    if(e.target.files[0]){
+      file2=e.target.files[0];
+      var z=document.getElementById('zone2');
+      z.innerHTML='<div style="font-size:26px;margin-bottom:6px">&#x2705;</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file2.name+'</div><div style="color:#94A3B8;font-size:12px;margin-top:3px">Tap to change</div><input type="file" id="fInput2" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">';
+      initZone2();
     }
   };
 }
@@ -297,13 +399,31 @@ function chk2(){document.getElementById('btnGo').disabled=!(q1&&q2&&q3);}
 function goStep2(){show('vStep2');}
 function show(id){['vStep1','vStep2','vLoad','vResult','vError'].forEach(function(v){document.getElementById(v).className=v===id?'':'hidden';});}
 
+function rateStar(n){
+  starRating=n;
+  document.querySelectorAll('.star').forEach(function(s,i){s.className=i<n?'star lit':'star';});
+  document.getElementById('feedbackExtra').className='';
+}
+
+function submitFeedback(){
+  var fb=document.getElementById('iFeedback').value.trim();
+  fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feedback:true,rating:starRating,comment:fb,lead:{name:document.getElementById('rName').textContent}})});
+  document.getElementById('feedbackExtra').className='hidden';
+  document.getElementById('feedbackThanks').className='';
+}
+
 function reset(){
-  file=null;q1=null;q2=null;q3=null;
-  ['iName','iEmail','iAddr'].forEach(function(i){document.getElementById(i).value='';});
+  file=null;file2=null;q1=null;q2=null;q3=null;starRating=0;
+  ['iName','iEmail','iAddr','iComments','iFeedback'].forEach(function(i){var el=document.getElementById(i);if(el)el.value='';});
   document.getElementById('iTime').value='';
   document.getElementById('btnNext').disabled=true;
   document.getElementById('btnGo').disabled=true;
   ['q1a','q1b','q1c','q2a','q2b','q2c','q3a','q3b','q3c','q3d'].forEach(function(i){document.getElementById(i).className='q-opt';});
+  document.querySelectorAll('.star').forEach(function(s){s.className='star';});
+  document.getElementById('feedbackExtra').className='hidden';
+  document.getElementById('feedbackThanks').className='hidden';
+  document.getElementById('addSecondWrap').className='hidden';
+  document.getElementById('btnAddSecond').className='btn-ghost';
   var z=document.getElementById('zone');
   z.innerHTML='<input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0"><div style="font-size:30px;margin-bottom:8px">&#x1F4C4;</div><div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div><div style="color:#64748B;font-size:13px">PDF or photo</div>';
   initZone();
@@ -315,14 +435,25 @@ function go(){
   var email=document.getElementById('iEmail').value.trim();
   var addr=document.getElementById('iAddr').value.trim();
   var time=document.getElementById('iTime').value;
+  var comments=document.getElementById('iComments').value.trim();
+  var hasSecond=!!file2;
   show('vLoad');
   var isImg=file.type.startsWith('image/');
   var p=isImg?resz(file):b64(file);
-  p.then(function(data){
+  var p2=file2?(file2.type.startsWith('image/')?resz(file2):b64(file2)):Promise.resolve(null);
+  Promise.all([p,p2]).then(function(results){
+    var data=results[0],data2=results[1];
     var mime=isImg?'image/jpeg':'application/pdf';
+    var mime2=file2?(file2.type.startsWith('image/')?'image/jpeg':'application/pdf'):null;
     var blk=isImg?{type:'image',source:{type:'base64',media_type:mime,data:data}}:{type:'document',source:{type:'base64',media_type:mime,data:data}};
-    var txt='Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'.';
-    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:getSYS(q1,q2,q3,time),messages:[{role:'user',content:[blk,{type:'text',text:txt}]}],lead:{name:name,email:email,addr:addr,timeline:time,zoned:q1,usage:q2,tenure:q3}})});
+    var contentArr=[blk];
+    if(data2&&mime2){
+      var blk2=mime2==='image/jpeg'?{type:'image',source:{type:'base64',media_type:mime2,data:data2}}:{type:'document',source:{type:'base64',media_type:mime2,data:data2}};
+      contentArr.push(blk2);
+    }
+    var txt=hasSecond?'Compare these two HVAC proposals for '+name+(addr?' at '+addr:'')+'. The first document is Quote A and the second is Quote B.':'Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'.';
+    contentArr.push({type:'text',text:txt});
+    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:getSYS(q1,q2,q3,time,comments,hasSecond),messages:[{role:'user',content:contentArr}],lead:{name:name,email:email,addr:addr,timeline:time,zoned:q1,usage:q2,tenure:q3,comments:comments,comparing:hasSecond}})});
   }).then(function(r){return r.text().then(function(raw){
     var j;try{j=JSON.parse(raw);}catch(e){throw new Error('Bad response: '+raw.slice(0,200));}
     if(j.error)throw new Error(j.error.message||JSON.stringify(j.error));
@@ -335,12 +466,13 @@ function go(){
     document.getElementById('rEmail').textContent='Riley will follow up at '+email;
     var secs=t.split(/(?=^## )/m).filter(function(s){return s.trim();});
     var html='';
+    var icons={'What You\'re Being Quoted':'📋','Scope of Work':'🔧','The Equipment':'⚙️','Is the Price Fair?':'💰','Is This the Right Fit?':'🏠','Before You Sign — Ask These Questions':'❓','Riley\'s Recommendation':'🤝'};
     secs.forEach(function(s){
       var lines=s.trim().split('\n');
       var h=lines[0].replace(/^##\s*/,'').trim();
       var b=lines.slice(1).join('\n').trim();
       var isRiley=h==="Riley's Recommendation";
-      var icon={'What You\'re Being Quoted':'📋','Scope of Work':'🔧','The Equipment':'⚙️','Is the Price Fair?':'💰','Is This the Right Fit?':'🏠','Before You Sign — Ask These Questions':'❓','Riley\'s Recommendation':'🤝'}[h]||'';
+      var icon=icons[h]||'';
       html+='<div class="sec'+(isRiley?' riley':'')+'"><div class="sec-ttl">'+(icon?icon+' ':'')+h+'</div><div class="sec-body">'+b.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')+'</div></div>';
     });
     document.getElementById('rSections').innerHTML=html;
