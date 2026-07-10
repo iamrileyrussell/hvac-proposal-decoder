@@ -70,18 +70,6 @@ label{font-size:13px;font-weight:700;color:#374151}
       <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div>
       <div style="color:#64748B;font-size:13px">PDF or photo</div>
     </div>
-    <!-- Second proposal (optional) -->
-    <div id="addSecondWrap" class="hidden" style="margin-top:12px">
-      <div style="font-size:12px;font-weight:700;color:#C8873A;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em">Comparing a second proposal (optional)</div>
-      <div class="zone2" id="zone2">
-        <input type="file" id="fInput2" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">
-        <div style="font-size:24px;margin-bottom:6px">📄</div>
-        <div style="font-weight:700;color:#C8873A;margin-bottom:3px;font-size:14px">Tap to upload second proposal</div>
-        <div style="color:#94A3B8;font-size:12px">I'll compare them side by side</div>
-      </div>
-      <button class="btn-ghost" onclick="removeSecond()" style="margin-top:6px;font-size:12px">✕ Remove second proposal</button>
-    </div>
-    <button class="btn-ghost" id="btnAddSecond" onclick="showSecond()">+ Compare a second proposal</button>
   </div>
 
   <div class="card">
@@ -199,18 +187,8 @@ label{font-size:13px;font-weight:700;color:#374151}
 
 </div>
 <script>
-var file=null,file2=null,q1=null,q2=null,q3=null,starRating=0;
+var file=null,q1=null,q2=null,q3=null,starRating=0;
 
-function showSecond(){
-  document.getElementById('addSecondWrap').className='';
-  document.getElementById('btnAddSecond').className='hidden';
-  initZone2();
-}
-function removeSecond(){
-  file2=null;
-  document.getElementById('addSecondWrap').className='hidden';
-  document.getElementById('btnAddSecond').className='btn-ghost';
-}
 
 function getSYS(zoned,usage,tenure,timeline,comments,hasSecond){
   var zoningContext='';
@@ -375,15 +353,6 @@ function initZone(){
     }
   };
 }
-function initZone2(){
-  document.getElementById('zone2').onclick=function(){document.getElementById('fInput2').click();};
-  document.getElementById('fInput2').onchange=function(e){
-    if(e.target.files[0]){
-      file2=e.target.files[0];
-      var z=document.getElementById('zone2');
-      z.innerHTML='<div style="font-size:26px;margin-bottom:6px">&#x2705;</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file2.name+'</div><div style="color:#94A3B8;font-size:12px;margin-top:3px">Tap to change</div><input type="file" id="fInput2" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0">';
-      initZone2();
-    }
   };
 }
 initZone();
@@ -413,7 +382,7 @@ function submitFeedback(){
 }
 
 function reset(){
-  file=null;file2=null;q1=null;q2=null;q3=null;starRating=0;
+  file=null;q1=null;q2=null;q3=null;starRating=0;
   ['iName','iEmail','iAddr','iComments','iFeedback'].forEach(function(i){var el=document.getElementById(i);if(el)el.value='';});
   document.getElementById('iTime').value='';
   document.getElementById('btnNext').disabled=true;
@@ -422,8 +391,6 @@ function reset(){
   document.querySelectorAll('.star').forEach(function(s){s.className='star';});
   document.getElementById('feedbackExtra').className='hidden';
   document.getElementById('feedbackThanks').className='hidden';
-  document.getElementById('addSecondWrap').className='hidden';
-  document.getElementById('btnAddSecond').className='btn-ghost';
   var z=document.getElementById('zone');
   z.innerHTML='<input type="file" id="fInput" accept=".pdf,image/*" style="display:none;width:auto;padding:0;border:none;margin:0"><div style="font-size:30px;margin-bottom:8px">&#x1F4C4;</div><div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div><div style="color:#64748B;font-size:13px">PDF or photo</div>';
   initZone();
@@ -436,24 +403,17 @@ function go(){
   var addr=document.getElementById('iAddr').value.trim();
   var time=document.getElementById('iTime').value;
   var comments=document.getElementById('iComments').value.trim();
-  var hasSecond=!!file2;
+  var hasSecond=false;
   show('vLoad');
   var isImg=file.type.startsWith('image/');
   var p=isImg?resz(file):b64(file);
-  var p2=file2?(file2.type.startsWith('image/')?resz(file2):b64(file2)):Promise.resolve(null);
-  Promise.all([p,p2]).then(function(results){
-    var data=results[0],data2=results[1];
+  p.then(function(data){
     var mime=isImg?'image/jpeg':'application/pdf';
-    var mime2=file2?(file2.type.startsWith('image/')?'image/jpeg':'application/pdf'):null;
     var blk=isImg?{type:'image',source:{type:'base64',media_type:mime,data:data}}:{type:'document',source:{type:'base64',media_type:mime,data:data}};
     var contentArr=[blk];
-    if(data2&&mime2){
-      var blk2=mime2==='image/jpeg'?{type:'image',source:{type:'base64',media_type:mime2,data:data2}}:{type:'document',source:{type:'base64',media_type:mime2,data:data2}};
-      contentArr.push(blk2);
-    }
-    var txt=hasSecond?'Compare these two HVAC proposals for '+name+(addr?' at '+addr:'')+'. The first document is Quote A and the second is Quote B.':'Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'.';
+    var txt='Analyze this HVAC proposal for '+name+(addr?' at '+addr:'')+'.'
     contentArr.push({type:'text',text:txt});
-    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:getSYS(q1,q2,q3,time,comments,hasSecond),messages:[{role:'user',content:contentArr}],lead:{name:name,email:email,addr:addr,timeline:time,zoned:q1,usage:q2,tenure:q3,comments:comments,comparing:hasSecond}})});
+    return fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-5',max_tokens:3000,system:getSYS(q1,q2,q3,time,comments,hasSecond),messages:[{role:'user',content:contentArr}],lead:{name:name,email:email,addr:addr,timeline:time,zoned:q1,usage:q2,tenure:q3,comments:comments}})});
   }).then(function(r){return r.text().then(function(raw){
     var j;try{j=JSON.parse(raw);}catch(e){throw new Error('Bad response: '+raw.slice(0,200));}
     if(j.error)throw new Error(j.error.message||JSON.stringify(j.error));
