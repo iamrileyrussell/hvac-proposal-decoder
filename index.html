@@ -66,8 +66,8 @@ label{font-size:13px;font-weight:700;color:#374151}
       <div style="font-size:30px;margin-bottom:8px">📄</div>
       <div style="font-weight:700;color:#1E293B;margin-bottom:6px">Select your proposal file</div>
       <div style="color:#64748B;font-size:13px;margin-bottom:12px">PDF or photo</div>
-      <label for="fInput" style="display:inline-block;background:#C8873A;color:#fff;padding:11px 28px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:Georgia,serif">Choose File</label>
-      <input type="file" id="fInput" accept=".pdf,image/*" style="display:none">
+      <label for="fInput" style="display:inline-block;background:#C8873A;color:#fff;padding:11px 28px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:Georgia,serif" onclick="startPolling()">Choose File</label>
+      <input type="file" id="fInput" accept=".pdf,image/*" style="position:fixed;top:-1000px;left:-1000px;opacity:0">
       <div id="fName" style="margin-top:10px;font-size:13px;color:#2E7D4F;font-weight:600;min-height:20px"></div>
     </div>
   </div>
@@ -195,8 +195,29 @@ label{font-size:13px;font-weight:700;color:#374151}
 <script>
 var file=null,q1=null,q2=null,q3=null,starRating=0;
 
+var pollTimer=null;
+function startPolling(){
+  // Clear any existing poll
+  if(pollTimer) clearInterval(pollTimer);
+  // Start polling after a short delay to let the picker open
+  setTimeout(function(){
+    pollTimer=setInterval(function(){
+      var inp=document.getElementById('fInput');
+      if(inp&&inp.files&&inp.files[0]){
+        clearInterval(pollTimer);
+        file=inp.files[0];
+        document.getElementById('fName').textContent='✅ '+file.name;
+        chk1();
+      }
+    },300);
+    // Stop polling after 5 minutes
+    setTimeout(function(){clearInterval(pollTimer);},300000);
+  },500);
+}
+// Also keep the change event as backup
 document.getElementById('fInput').addEventListener('change',function(){
   if(this.files&&this.files[0]){
+    clearInterval(pollTimer);
     file=this.files[0];
     document.getElementById('fName').textContent='✅ '+file.name;
     chk1();
