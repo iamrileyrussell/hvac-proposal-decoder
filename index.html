@@ -8,13 +8,12 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Georgia,serif;background:#F8F4EF;min-height:100vh}
 .hdr{background:#1E293B;padding:15px 20px;display:flex;align-items:center;gap:12px}
-.avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #C8873A}
 .wrap{max-width:500px;margin:0 auto;padding:20px 16px 60px}
 .card{background:#fff;border-radius:16px;padding:18px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
 input,select,textarea{width:100%;padding:10px 12px;border-radius:8px;border:1.5px solid #E2E8F0;font-size:15px;font-family:inherit;color:#1E293B;background:#fff;outline:none;margin-top:5px}
 textarea{resize:vertical;min-height:80px;line-height:1.5}
 label{font-size:13px;font-weight:700;color:#374151}
-.upload-area{border:2px dashed #CBD5E1;border-radius:12px;padding:28px 16px;text-align:center;background:#F8FAFC}
+.zone{border:2px dashed #CBD5E1;border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;background:#F8FAFC}
 .btn{width:100%;padding:16px;border-radius:12px;border:none;background:#C8873A;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;margin-top:4px}
 .btn:disabled{background:#E2E8F0;color:#94A3B8;cursor:not-allowed}
 .btn-outline{width:100%;padding:13px;border-radius:12px;border:1.5px solid #CBD5E1;background:transparent;color:#64748B;font-family:inherit;font-size:14px;cursor:pointer;margin-top:10px}
@@ -25,7 +24,7 @@ label{font-size:13px;font-weight:700;color:#374151}
 .sec.riley .sec-ttl{color:#C8873A}
 .sec-body{font-size:14px;color:#374151;line-height:1.7;white-space:pre-wrap}
 .cta-box{background:#1E293B;border-radius:14px;padding:22px;text-align:center;margin-top:8px}
-.cta-btn{display:inline-block;background:#C8873A;color:#fff;padding:12px 26px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px}
+.cta-btn{display:inline-block;background:#C8873A;color:#fff;padding:12px 26px;border-radius:9px;text-decoration:none;font-weight:700;font-size:14px;border:none;cursor:pointer;font-family:inherit}
 .err{background:#FEF2F2;border:1.5px solid #FECACA;border-radius:10px;padding:14px;color:#DC2626;font-size:13px;word-break:break-word}
 .ok{background:#2E7D4F;border-radius:11px;padding:13px 16px;margin-bottom:16px;color:#fff}
 .q-opt{width:100%;padding:14px 16px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;font-family:inherit;font-size:14px;color:#1E293B;cursor:pointer;margin-bottom:8px;text-align:left;transition:all .15s}
@@ -40,7 +39,7 @@ label{font-size:13px;font-weight:700;color:#374151}
 </head>
 <body>
 <div class="hdr">
-  <img class="avatar" src="Headshot.jpg" alt="Riley Russell" onerror="this.style.display='none';document.getElementById('rrFallback').style.display='flex'">
+  <img style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #C8873A" src="Headshot.jpg" alt="Riley Russell" onerror="this.style.display='none';document.getElementById('rrFallback').style.display='flex'">
   <div id="rrFallback" style="display:none;width:44px;height:44px;border-radius:50%;background:#C8873A;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px;flex-shrink:0;border:2px solid #C8873A">RR</div>
   <div>
     <div style="color:#F8FAFC;font-weight:700;font-size:15px">HVAC Proposal Decoder</div>
@@ -62,13 +61,11 @@ label{font-size:13px;font-weight:700;color:#374151}
   <div class="card">
     <div class="badge">STEP 1 OF 3</div>
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:10px">Upload Your Proposal</div>
-    <div class="upload-area">
+    <div class="zone" id="zone">
+      <input type="file" id="fInput" accept=".pdf,image/*" style="display:none">
       <div style="font-size:30px;margin-bottom:8px">📄</div>
-      <div style="font-weight:700;color:#1E293B;margin-bottom:6px">Select your proposal file</div>
-      <div style="color:#64748B;font-size:13px;margin-bottom:12px">PDF or photo</div>
-      <label for="fInput" style="display:inline-block;background:#C8873A;color:#fff;padding:11px 28px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;font-family:Georgia,serif" onclick="startPolling()">Choose File</label>
-      <input type="file" id="fInput" accept=".pdf,image/*" style="position:fixed;top:-1000px;left:-1000px;opacity:0">
-      <div id="fName" style="margin-top:10px;font-size:13px;color:#2E7D4F;font-weight:600;min-height:20px"></div>
+      <div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div>
+      <div style="color:#64748B;font-size:13px">PDF or photo</div>
     </div>
   </div>
 
@@ -92,7 +89,7 @@ label{font-size:13px;font-weight:700;color:#374151}
   <div class="card">
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:4px">Your Thoughts on the Proposal <span style="font-weight:400;color:#94A3B8;font-size:12px">(optional)</span></div>
     <div style="color:#64748B;font-size:13px;margin-bottom:8px;line-height:1.5">How did the contractor explain things? How do you feel about the price? Anything on your mind.</div>
-    <textarea id="iComments" placeholder="Example: &quot;The salesperson didn't explain much and I have no idea what I'm being offered&quot; or &quot;This feels really expensive&quot;..."></textarea>
+    <textarea id="iComments" placeholder="Example: &quot;The salesperson didn't explain much&quot; or &quot;This feels really expensive&quot;..."></textarea>
   </div>
 
   <button class="btn" id="btnNext" disabled onclick="goStep2()">Next &rarr;</button>
@@ -110,7 +107,7 @@ label{font-size:13px;font-weight:700;color:#374151}
   <div class="card">
     <div class="badge">STEP 3 OF 3</div>
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:6px">Does this home have multiple HVAC systems or zones?</div>
-    <div style="color:#64748B;font-size:13px;margin-bottom:12px">For example, separate units for upstairs and downstairs, or multiple thermostats controlling different areas.</div>
+    <div style="color:#64748B;font-size:13px;margin-bottom:12px">For example, separate units for upstairs and downstairs, or multiple thermostats.</div>
     <button class="q-opt" id="q1a" onclick="selQ1('yes')">Yes — multiple systems or zones</button>
     <button class="q-opt" id="q1b" onclick="selQ1('no')">No — one system for the whole home</button>
     <button class="q-opt" id="q1c" onclick="selQ1('unsure')">Not sure</button>
@@ -153,7 +150,7 @@ label{font-size:13px;font-weight:700;color:#374151}
   <div class="feedback-box">
     <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:4px">Was this analysis helpful?</div>
     <div style="color:#64748B;font-size:13px">Your feedback helps improve the tool.</div>
-    <div class="stars" id="starRow">
+    <div class="stars">
       <span class="star" onclick="rateStar(1)">⭐</span>
       <span class="star" onclick="rateStar(2)">⭐</span>
       <span class="star" onclick="rateStar(3)">⭐</span>
@@ -172,12 +169,12 @@ label{font-size:13px;font-weight:700;color:#374151}
     <div style="color:#F8FAFC;font-size:15px;font-weight:700;margin-bottom:5px">Want to talk it through with Riley?</div>
     <div style="color:#94A3B8;font-size:13px;margin-bottom:14px">Free 15-min call. No pressure. No sales pitch. Just straight answers.</div>
     <div id="ctaDefault">
-      <button class="cta-btn" style="border:none;cursor:pointer" onclick="requestCall()">Schedule a Free Call</button>
+      <button class="cta-btn" onclick="requestCall()">Schedule a Free Call</button>
     </div>
-    <div id="ctaSending" class="hidden" style="color:#94A3B8;font-size:13px">Sending your request...</div>
-    <div id="ctaDone" class="hidden">
+    <div id="ctaSending" class="hidden" style="color:#94A3B8;font-size:13px;margin-top:8px">Sending your request...</div>
+    <div id="ctaDone" class="hidden" style="margin-top:8px">
       <div style="color:#C8873A;font-weight:700;font-size:15px;margin-bottom:4px">✅ Request received!</div>
-      <div style="color:#94A3B8;font-size:13px">Riley will reach out to you shortly at the contact info you provided.</div>
+      <div style="color:#94A3B8;font-size:13px">Riley will reach out to you shortly.</div>
     </div>
   </div>
   <button class="btn-outline" onclick="reset()">Analyze Another Proposal</button>
@@ -195,39 +192,20 @@ label{font-size:13px;font-weight:700;color:#374151}
 <script>
 var file=null,q1=null,q2=null,q3=null,starRating=0;
 
-var pollTimer=null;
-function startPolling(){
-  // Clear any existing poll
-  if(pollTimer) clearInterval(pollTimer);
-  // Start polling after a short delay to let the picker open
-  setTimeout(function(){
-    pollTimer=setInterval(function(){
-      var inp=document.getElementById('fInput');
-      if(inp&&inp.files&&inp.files[0]){
-        clearInterval(pollTimer);
-        file=inp.files[0];
-        document.getElementById('fName').textContent='✅ '+file.name;
-        chk1();
-      }
-    },300);
-    // Stop polling after 5 minutes
-    setTimeout(function(){clearInterval(pollTimer);},300000);
-  },500);
+function initZone(){
+  document.getElementById('zone').onclick=function(){document.getElementById('fInput').click();};
+  document.getElementById('fInput').onchange=function(e){
+    if(e.target.files[0]){
+      file=e.target.files[0];
+      var z=document.getElementById('zone');
+      z.innerHTML='<input type="file" id="fInput" accept=".pdf,image/*" style="display:none"><div style="font-size:26px;margin-bottom:6px">&#x2705;</div><div style="font-weight:700;color:#2E7D4F;font-size:14px">'+file.name+'</div><div style="color:#64748B;font-size:12px;margin-top:3px">Tap to change</div>';
+      initZone();chk1();
+    }
+  };
 }
-// Also keep the change event as backup
-document.getElementById('fInput').addEventListener('change',function(){
-  if(this.files&&this.files[0]){
-    clearInterval(pollTimer);
-    file=this.files[0];
-    document.getElementById('fName').textContent='✅ '+file.name;
-    chk1();
-  }
-});
+initZone();
 
-function chk1(){
-  var ok=file&&document.getElementById('iName').value.trim()&&document.getElementById('iEmail').value.trim();
-  document.getElementById('btnNext').disabled=!ok;
-}
+function chk1(){var ok=file&&document.getElementById('iName').value.trim()&&document.getElementById('iEmail').value.trim();document.getElementById('btnNext').disabled=!ok;}
 document.getElementById('iName').oninput=chk1;
 document.getElementById('iEmail').oninput=chk1;
 
@@ -251,51 +229,56 @@ function submitFeedback(){
   document.getElementById('feedbackThanks').className='';
 }
 
+function requestCall(){
+  document.getElementById('ctaDefault').className='hidden';
+  document.getElementById('ctaSending').className='';
+  var name=document.getElementById('iName').value.trim();
+  var email=document.getElementById('iEmail').value.trim();
+  fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({callRequest:true,lead:{name:name,email:email}})}).then(function(){
+    document.getElementById('ctaSending').className='hidden';
+    document.getElementById('ctaDone').className='';
+  }).catch(function(){
+    document.getElementById('ctaSending').className='hidden';
+    document.getElementById('ctaDone').className='';
+  });
+}
+
 function reset(){
   file=null;q1=null;q2=null;q3=null;starRating=0;
   ['iName','iEmail','iAddr','iComments','iFeedback'].forEach(function(i){var el=document.getElementById(i);if(el)el.value='';});
   document.getElementById('iTime').value='';
-  document.getElementById('fName').textContent='';
   document.getElementById('btnNext').disabled=true;
   document.getElementById('btnGo').disabled=true;
   ['q1a','q1b','q1c','q2a','q2b','q2c','q3a','q3b','q3c','q3d'].forEach(function(i){document.getElementById(i).className='q-opt';});
   document.querySelectorAll('.star').forEach(function(s){s.className='star';});
   document.getElementById('feedbackExtra').className='hidden';
   document.getElementById('feedbackThanks').className='hidden';
+  document.getElementById('ctaDefault').className='';
+  document.getElementById('ctaSending').className='hidden';
+  document.getElementById('ctaDone').className='hidden';
+  var z=document.getElementById('zone');
+  z.innerHTML='<input type="file" id="fInput" accept=".pdf,image/*" style="display:none"><div style="font-size:30px;margin-bottom:8px">&#x1F4C4;</div><div style="font-weight:700;color:#1E293B;margin-bottom:3px">Tap to upload</div><div style="color:#64748B;font-size:13px">PDF or photo</div>';
+  initZone();
   show('vStep1');
 }
 
 function getSYS(zoned,usage,tenure,timeline,comments){
   var zoningContext='';
-  if(zoned==='yes'){
-    zoningContext='ZONING FLAG — CRITICAL: This home has multiple HVAC systems or zones (multiple thermostats). This is the single most important factor in evaluating this proposal. A single-stage system on a zoned home is like breathing in through two nostrils and blowing out through a straw — the static pressure buildup will kill the system prematurely, often in under 10 years. A two-stage system is the bare minimum for a two-zone home. Variable speed is the best solution. If this proposal is offering a single-stage system for a zoned home, that must be clearly flagged in the "Is This the Right Fit?" section. Do not bury this concern — it is the most important thing the homeowner needs to know.';
-  } else if(zoned==='no'){
-    zoningContext='This is a single-zone, single-thermostat home. A single-stage system is an acceptable solution here, though two-stage or variable speed will provide better comfort and humidity control in Raleigh\'s climate.';
-  } else {
-    zoningContext='The homeowner was unsure about zoning. If the proposal mentions zones, dampers, or multiple thermostats, treat it as a zoned home.';
-  }
-  var usageContext='';
-  if(usage==='occasional'||usage==='rarely'){
-    usageContext='USAGE: This space is used occasionally or rarely. A reliable single or two-stage system is the right call — a top-tier variable speed system is overkill here.';
-  } else {
-    usageContext='USAGE: This is a primary living space used daily. In Raleigh\'s humid summers, two-stage or variable speed will provide meaningfully better comfort and humidity control.';
-  }
-  var tenureContext='';
-  if(tenure==='forever'||tenure==='longterm'){
-    tenureContext='TENURE: Forever home or 10+ years. Stepping up to two-stage or variable speed makes the most sense — the homeowner will get their money\'s worth over time.';
-  } else if(tenure==='midterm'){
-    tenureContext='TENURE: 5-10 years. Two-stage is worth considering, but a quality single-stage from a reputable contractor is also a solid choice.';
-  } else {
-    tenureContext='TENURE: Less than 5 years. A solid single-stage system is the right recommendation — they are unlikely to recoup the cost of a premium system before selling. Exception: zoning infrastructure must still be addressed properly regardless of tenure.';
-  }
-  var timelineContext=timeline?'TIMELINE: '+timeline+'. Factor this into the tone.':'';
-  var commentsContext='';
-  if(comments&&comments.trim()){
-    commentsContext='HOMEOWNER\'S OWN WORDS: "'+comments.trim()+'"\nThis is important context. If they say they have no idea what they were offered, the contractor failed to educate them — address that directly. If they feel the price is too high, validate or correct that based on market data. Make them feel heard.';
-  }
-  return 'You are Riley Russell, a professional HVAC Comfort Advisor in Raleigh, NC. You help homeowners understand their HVAC proposals honestly and in plain English. You are not a salesperson — you are an advisor. You give straight talk and always put the homeowner\'s best interest first, even if that means telling them a competitor\'s quote is a good one.\n\nYour core belief: HVAC replacement is one of the largest investments a homeowner will make. If the install is not done correctly, it can end up costing them double or triple what it would have cost to do it right the first time. About 90% of HVAC installs are done wrong. The biggest thing a homeowner is buying is the INSTALL — the hands putting in the equipment.\n\nYOUR VOICE: Warm, direct, plain-spoken. Talk like a trusted friend who knows HVAC. Explain technical terms immediately. Never fear-monger — empower. Say things once, clearly. No repetition across sections.\n\nBRAND KNOWLEDGE:\nTop-tier: Lennox, Trane, Carrier. Built to last 15-20 years with proper maintenance.\nBudget brands: Goodman, Amana, York, Coleman. More likely to fail before 10 years.\n\nLENNOX TIERS (do not list model numbers in output):\n- Merit: Working man\'s unit. Two-stage Merit AC is great bang-for-buck and is COMMONLY and CORRECTLY paired with an Elite furnace — this is normal, NOT a mismatch.\n- Elite: Middle of the road, great bang for buck. Current 90% Elite furnace (EL297) is current and widely used — do NOT flag as outdated.\n- Signature: Best of the best. Variable speed, fully communicating.\n- Two-stage technology has migrated down to Merit as Lennox released higher-end variable speed lines. This is not a downgrade.\n\nRALEIGH FAIR MARKET PRICING (complete install, 80% furnace — 90% adds ~$1,500-$2,000):\nSingle-Stage: 2t $13-14K | 2.5t $13.6-14.3K | 3t $14.2-15K | 3.5t $15-15.8K | 4t $15.7-16.5K | 5t $17-17.9K\nTwo-Stage (Merit AC + Elite furnace): 2.5t $15.8-17K | 3t $16.5-17.9K | 4t $18-19.5K | 5t $19.3-20.7K\nVariable Speed Elite: 2t $17.5-21.8K | 2.5t $17.6-23.5K | 3.5t $19.8-25.3K | 4t $21.5-26.2K\nVariable Speed Signature: 2t $25K | 2.5t $25.7-26.7K | 3.5t $27.5K | 4t $28.8-29K\n\nPRICING: Reputable contractor at lower end of market with complete scope = competitive, not cutting corners. Red flags: below $10K AND unverifiable company AND no permits AND missing scope. Like getting a tattoo from someone charging half the going rate — 70% of HVAC companies fail year one.\n\nSCOPE CHECKLIST (flag if missing):\n- Manual J load calculation (required by city code)\n- Supply AND return plenum replacement\n- Line set evaluation (right size; if reused, nitrogen-flushed and vacuumed to ~300 microns)\n- Ductwork sizing\n- Permits (no permit = red flag)\n- Warranty (2-yr labor + 2 yrs maintenance is the strong standard; 10-yr parts requires registration and annual maintenance)\n\n'+zoningContext+'\n\n'+usageContext+'\n\n'+tenureContext+'\n\n'+timelineContext+'\n\n'+commentsContext+'\n\nAnalyze the uploaded proposal and respond in these exact sections. Each section does ONE job. Do not repeat points across sections.
+  if(zoned==='yes'){zoningContext='ZONING FLAG — CRITICAL: This home has multiple HVAC systems or zones. A single-stage system on a zoned home is like breathing in through two nostrils and blowing out through a straw — static pressure buildup will kill the system prematurely, often in under 10 years. Two-stage is the bare minimum for a two-zone home. Variable speed is the best solution. Flag this clearly in "Is This the Right Fit?" if a single-stage is being proposed.';}
+  else if(zoned==='no'){zoningContext='Single-zone, single-thermostat home. Single-stage is acceptable here, though two-stage or variable speed provides better comfort in Raleigh\'s humid climate.';}
+  else{zoningContext='Zoning not confirmed. If the proposal mentions zones, dampers, or multiple thermostats, treat as a zoned home.';}
 
-IMPORTANT: The name on the proposal may differ from the name the homeowner entered — a spouse, family member, or friend may be researching on someone else's behalf. Do NOT question this or ask for clarification. Simply analyze the proposal as submitted. If you notice a name difference, you may briefly acknowledge it in a natural, friendly way (e.g. 'I see this proposal is made out to Jennifer — I'll go ahead and break it down for you.') and move straight into the analysis. Never refuse or delay the analysis based on name mismatches.\n\n## What You\'re Being Quoted\nOne short paragraph. Plain-English summary of the system type, brand, and total price. Facts only.\n\n## Scope of Work\nWhat is included? Go through the checklist. Call out what is covered and what is missing or unclear.\n\n## The Equipment\nBrand tier, system type (single/two-stage/variable speed). Plain language, no model numbers.\n\n## Is the Price Fair?\nCompare to Raleigh fair market by system type and size. Straight answer: good deal, fair, high, or red flag.\n\n## Is This the Right Fit?\nDoes this system match the home\'s zoning, usage, and tenure? Flag mismatches clearly.\n\n## Before You Sign — Ask These Questions\n3-5 specific questions based on gaps in this proposal.\n\n## Riley\'s Recommendation\nHonest complete take as Riley Russell. Would you tell a friend to sign this? Close with a trust-based, no-pressure next step.';
+  var usageContext=usage==='occasional'||usage==='rarely'?'USAGE: Occasional/rare use. Single or two-stage is the right call — variable speed is overkill.':'USAGE: Primary daily living space. Two-stage or variable speed provides meaningfully better comfort and humidity control in Raleigh summers.';
+
+  var tenureContext='';
+  if(tenure==='forever'||tenure==='longterm'){tenureContext='TENURE: Forever home or 10+ years. Two-stage or variable speed makes the most sense — homeowner will recoup the investment.';}
+  else if(tenure==='midterm'){tenureContext='TENURE: 5-10 years. Two-stage worth considering; quality single-stage also solid.';}
+  else{tenureContext='TENURE: Under 5 years. Recommend solid single-stage — unlikely to recoup premium system cost before selling. Still address zoning infrastructure properly.';}
+
+  var timelineContext=timeline?'TIMELINE: '+timeline+'. Acknowledge urgency appropriately.':'';
+  var commentsContext=comments&&comments.trim()?'HOMEOWNER\'S OWN WORDS: "'+comments.trim()+'"\nUse this to tailor your recommendation. If they feel confused, fill in the gaps. If they feel overcharged, validate or correct with market data. Make them feel heard.':'';
+
+  return 'You are Riley Russell, a professional HVAC Comfort Advisor in Raleigh, NC. You help homeowners understand their HVAC proposals honestly and in plain English. You are an advisor, not a salesperson. Straight talk, homeowner\'s best interest first — even if that means telling them a competitor\'s quote is a good one.\n\nCore belief: HVAC replacement is one of the largest investments a homeowner makes. About 90% of installs are done wrong. The biggest thing they\'re buying is the INSTALL — the hands on the equipment. A bad install costs double or triple to fix. You see bad installs daily.\n\nVOICE: Warm, direct, plain-spoken. Like a trusted friend who knows HVAC. Explain technical terms immediately. Never fear-monger. Say things ONCE. No repetition across sections.\n\nBRAND KNOWLEDGE:\nTop-tier: Lennox, Trane, Carrier — 15-20 year lifespan with proper maintenance.\nBudget: Goodman, Amana, York, Coleman — more likely to fail before 10 years.\n\nLENNOX TIERS (never list model numbers in output — speak in plain terms):\n- Merit: Working man\'s unit. Two-stage Merit AC + Elite furnace is a NORMAL, CORRECT pairing — not a mismatch.\n- Elite: Middle of road, great bang for buck. Current 90% Elite furnace (EL297) is current — do NOT flag as outdated.\n- Signature: Best of the best. Variable speed, fully communicating.\n- Two-stage has migrated to Merit line as Lennox released higher-end variable speed. Not a downgrade.\n\nRALEIGH FAIR MARKET PRICING (complete install, 80% furnace — 90% adds ~$1,500-2,000):\nSingle-Stage: 2t $13-14K | 2.5t $13.6-14.3K | 3t $14.2-15K | 3.5t $15-15.8K | 4t $15.7-16.5K | 5t $17-17.9K\nTwo-Stage (Merit AC + Elite furnace): 2.5t $15.8-17K | 3t $16.5-17.9K | 4t $18-19.5K | 5t $19.3-20.7K\nVariable Speed Elite: 2t $17.5-21.8K | 2.5t $17.6-23.5K | 3.5t $19.8-25.3K | 4t $21.5-26.2K\nVariable Speed Signature: 2t $25K | 2.5t $25.7-26.7K | 3.5t $27.5K | 4t $28.8-29K\n\nPRICING: Reputable contractor at lower end with complete scope = competitive, not cutting corners. Red flags: below $10K AND unverifiable company AND no permits AND missing scope. Like a tattoo from someone charging half price — 70% of HVAC companies fail year one.\n\nSCOPE CHECKLIST (flag if missing/unclear):\n- Manual J load calculation (required by city code before any replacement)\n- Supply AND return plenum replacement\n- Line set evaluation (right size; if reused, nitrogen-flushed and vacuumed to ~300 microns)\n- Ductwork sizing\n- Permits (no permit = red flag)\n- Warranty (2-yr labor + 2 yrs maintenance is the strong standard; 10-yr parts requires registration + annual maintenance)\n\nIMPORTANT: Name on proposal may differ from homeowner\'s name — a spouse or family member may be researching. Do NOT question this. If names differ, briefly acknowledge it naturally and move straight into the analysis.\n\n'+zoningContext+'\n'+usageContext+'\n'+tenureContext+'\n'+timelineContext+'\n'+commentsContext+'\n\nAnalyze the uploaded proposal in these exact sections. Each section does ONE job. No repetition.\n\n## What You\'re Being Quoted\nOne short paragraph. System type, brand, total price. Facts only.\n\n## Scope of Work\nWhat\'s included? Run the checklist. Call out what\'s covered and what\'s missing.\n\n## The Equipment\nBrand tier, system type. Plain language, no model numbers.\n\n## Is the Price Fair?\nCompare to Raleigh market by system type and size. Straight verdict: good deal, fair, high, or red flag.\n\n## Is This the Right Fit?\nDoes this system match zoning, usage, and tenure? Flag mismatches clearly.\n\n## Before You Sign — Ask These Questions\n3-5 specific questions based on gaps in this proposal.\n\n## Riley\'s Recommendation\nHonest complete take as Riley Russell. Would you tell a friend to sign this? Close with trust-based, no-pressure next step.';
 }
 
 function go(){
@@ -336,23 +319,6 @@ function go(){
     document.getElementById('rSections').innerHTML=html;
     show('vResult');
   }).catch(function(e){document.getElementById('errMsg').textContent=e.message;show('vError');});
-}
-
-function requestCall(){
-  document.getElementById('ctaDefault').className='hidden';
-  document.getElementById('ctaSending').className='';
-  var name=document.getElementById('iName').value.trim();
-  var email=document.getElementById('iEmail').value.trim();
-  fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-    callRequest:true,
-    lead:{name:name,email:email}
-  })}).then(function(){
-    document.getElementById('ctaSending').className='hidden';
-    document.getElementById('ctaDone').className='';
-  }).catch(function(){
-    document.getElementById('ctaSending').className='hidden';
-    document.getElementById('ctaDone').className='';
-  });
 }
 
 function resz(f){return new Promise(function(res,rej){var i=new Image();var u=URL.createObjectURL(f);i.onload=function(){var M=1200,w=i.width,h=i.height;if(w>M){h=Math.round(h*M/w);w=M;}var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(i,0,0,w,h);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.8).split(',')[1]);};i.onerror=function(){rej(new Error('img fail'));};i.src=u;});}
